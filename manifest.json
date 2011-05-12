@@ -1,0 +1,17 @@
+{
+  "name": "A browser action which toggles the proxy when clicked.",
+  "version": "1.1",
+  "background_page": "background.html",
+  "options_page": "options.html",
+  "permissions": [
+    "experimental", "proxy",
+    "tabs", "http://*/"
+  ],
+  "browser_action": {
+      "name": "Click to proxy.",
+      "default_icon": "icon-19.png"
+  },
+  "icons": {
+      "128":"icon-128.png"
+  }
+}

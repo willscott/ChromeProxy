@@ -1,0 +1,32 @@
+<html>
+<head>
+<script>
+  function save() {
+    localStorage['incognito'] = document.getElementById('incognito').checked;
+    localStorage['txtrule'] = document.getElementById('rules').value;
+    localStorage['off'] = document.getElementById('off').value;
+  }
+  window.onload = function() {
+    document.getElementById('rules').value=localStorage['txtrule'] || "{singleProxy:{scheme:'http',host:'127.0.0.1',port:8080}}";
+    document.getElementById('incognito').checked=localStorage['incognito'];
+    document.getElementById('off').value=localStorage['off'] || 'system';
+  }
+</script>
+</head>
+<body>
+  Proxy Rule:
+  <textarea id='rules'></textarea>
+  <br />
+  Current Incognito Settings:
+  <input type='checkbox' id='incognito' />
+  <br />
+  What 'Off' Means:
+  <select id='off'>
+    <option value='direct'>Direct</option>
+    <option value='system'>System</option>
+    <option value='auto_detect'>Auto Detect</option>
+  </select>
+  <br />
+  <input type='button' onclick="save()" value='save' />
+</body>
+</html>

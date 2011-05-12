@@ -1,0 +1,32 @@
+<html>
+<head>
+<script>
+  var state = 0;
+  function setProxy() {
+    var proxysettings = {mode:localStorage['off'] || 'system'};
+    chrome.browserAction.setBadgeText({text:"off"});
+    if (state) {
+      chrome.browserAction.setBadgeText({text:"on"});
+      proxysettings['mode'] = 'fixed_servers';
+      var txtrule = localStorage['txtrule'];
+      if (!txtrule) {
+        txtrule = localStorage['txtrule'] = "{singleProxy:{scheme:'http',host:'127.0.0.1',port:8080}}";
+      }
+      proxysettings['rules'] = eval('(' + txtrule + ')');
+    }
+    var incognito = localStorage['incognito'] || false;
+    chrome.experimental.proxy.settings.set({'value': proxysettings, 'incognito':incognito}, function() {});
+  }
+
+  function flipState() {
+    state = !state;
+    setProxy();
+  }
+
+  chrome.browserAction.setIcon({path:"icon-16.png"});
+  chrome.browserAction.setBadgeBackgroundColor({color:[110,140,180,255]});
+  chrome.browserAction.onClicked.addListener(flipState);
+  setProxy();
+</script>
+</head>
+</html>

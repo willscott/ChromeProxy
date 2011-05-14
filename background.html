@@ -14,8 +14,10 @@
       }
       proxysettings['rules'] = eval('(' + txtrule + ')');
     }
-    var incognito = localStorage['incognito'] || false;
-    chrome.experimental.proxy.settings.set({'value': proxysettings, 'incognito':incognito}, function() {});
+    chrome.experimental.proxy.settings.set({
+      'value': proxysettings,
+      'incognito': !!localStorage['incognito']
+    }, function() {});
   }
 
   function flipState() {

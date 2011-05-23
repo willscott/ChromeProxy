@@ -10,17 +10,48 @@
     document.getElementById('rules').value=localStorage['txtrule'] || "{singleProxy:{scheme:'http',host:'127.0.0.1',port:8080}}";
     document.getElementById('incognito').checked=localStorage['incognito'];
     document.getElementById('off').value=localStorage['off'] || 'system';
+    document.getElementById('logo').src=chrome.extension.getURL('icon-128.png');
   }
 </script>
+<style type='text/css'>
+  label {
+    vertical-align:top;
+    margin-left:10px;
+    display:inline-block;
+    width:170px;
+    text-align:right;
+  }
+  textarea {
+    width:400px;
+    height:100px;
+  }
+  input[type=button] {
+    margin-top:15px;
+    margin-left:200px;
+  }
+  div {
+    float:left;
+    background:#ccc;
+    width:600px;
+    border-radius: 15px;
+    padding-top:10px;
+    padding-bottom:10px;
+    margin-left:10px;
+  }
+</style>
+<title>Proxxy</title>
 </head>
 <body>
-  Proxy Rule:
+  <img id="logo" alt="proxxy logo" style="float:left;padding-bottom:10em"/>
+  <h2 style='padding-left:10px;'>Proxxy Settings</h2>
+  <div>
+  <label for='rules'>Proxy Rule:</label>
   <textarea id='rules'></textarea>
   <br />
-  Current Incognito Settings:
+  <label for='incognito'>Current Incognito Settings:</label>
   <input type='checkbox' id='incognito' />
   <br />
-  What 'Off' Means:
+  <label for='off'>What 'Off' Means:</label>
   <select id='off'>
     <option value='direct'>Direct</option>
     <option value='system'>System</option>
@@ -28,5 +59,6 @@
   </select>
   <br />
   <input type='button' onclick="save()" value='save' />
+  </div>
 </body>
 </html>

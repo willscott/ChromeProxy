@@ -4,8 +4,7 @@
   "background_page": "background.html",
   "options_page": "options.html",
   "permissions": [
-    "experimental", "proxy",
-    "tabs", "http://*/"
+    "proxy", "tabs", "http://*/"
   ],
   "browser_action": {
       "name": "Click to proxy.",

@@ -14,9 +14,9 @@
       }
       proxysettings['rules'] = eval('(' + txtrule + ')');
     }
-    chrome.experimental.proxy.settings.set({
+    chrome.proxy.settings.set({
       'value': proxysettings,
-      'incognito': !!localStorage['incognito']
+      'scope': (!!localStorage['incognito']) ? 'incognito_persistent' : 'regular'
     }, function() {});
   }
 
@@ -25,7 +25,7 @@
     setProxy();
   }
 
-  chrome.browserAction.setIcon({path:"icon-16.png"});
+  chrome.browserAction.setIcon({path:"icon-19.png"});
   chrome.browserAction.setBadgeBackgroundColor({color:[110,140,180,255]});
   chrome.browserAction.onClicked.addListener(flipState);
   setProxy();

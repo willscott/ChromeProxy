@@ -8,7 +8,7 @@
   }
   window.onload = function() {
     document.getElementById('rules').value=localStorage['txtrule'] || "{singleProxy:{scheme:'http',host:'127.0.0.1',port:8080}}";
-    document.getElementById('incognito').checked=localStorage['incognito'];
+    document.getElementById('incognito').checked=(localStorage['incognito']=='checked');
     document.getElementById('off').value=localStorage['off'] || 'system';
     document.getElementById('logo').src=chrome.extension.getURL('icon-128.png');
   }

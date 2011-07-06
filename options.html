@@ -3,6 +3,7 @@
 <script>
   function save() {
     localStorage['incognito'] = document.getElementById('incognito').checked;
+    localStorage['nincognito'] = document.getElementById('nincognito').checked;
     localStorage['txtrule'] = document.getElementById('rules').value;
     localStorage['off'] = document.getElementById('off').value;
   }
@@ -14,11 +15,17 @@
   }
 </script>
 <style type='text/css'>
+  #logo {
+    float: left;
+  }
+  body {
+    font-family:helvetica;
+  }
   label {
     vertical-align:top;
     margin-left:10px;
     display:inline-block;
-    width:170px;
+    width:200px;
     text-align:right;
   }
   textarea {
@@ -29,8 +36,11 @@
     margin-top:15px;
     margin-left:200px;
   }
-  div {
+  div.content {
+    position:relative;
     float:left;
+  }
+  div.section {
     background:#ccc;
     width:600px;
     border-radius: 15px;
@@ -38,27 +48,58 @@
     padding-bottom:10px;
     margin-left:10px;
   }
+  h2 {
+    margin-top:0;
+    margin-left:10px;
+  }
+  h3 {
+    margin-left:20px;
+    margin-bottom:0;
+    line-height:0.75em;
+  }
+  span.info {
+    color:#333;
+    font-size:small;
+    display:block;
+    padding:15px;
+  }
 </style>
 <title>Proxxy</title>
 </head>
 <body>
-  <img id="logo" alt="proxxy logo" style="float:left;padding-bottom:10em"/>
-  <h2 style='padding-left:10px;'>Proxxy Settings</h2>
-  <div>
-  <label for='rules'>Proxy Rule:</label>
-  <textarea id='rules'></textarea>
-  <br />
-  <label for='incognito'>Current Incognito Settings:</label>
-  <input type='checkbox' id='incognito' />
-  <br />
-  <label for='off'>What 'Off' Means:</label>
-  <select id='off'>
-    <option value='direct'>Direct</option>
-    <option value='system'>System</option>
-    <option value='auto_detect'>Auto Detect</option>
-  </select>
-  <br />
-  <input type='button' onclick="save()" value='save' />
+  <img id="logo" alt="proxxy logo"/>
+  <div class='content'>
+    <h2>Proxxy Settings</h2>
+    <h3>On</h3>
+    <div class='section'>
+      <textarea id='rules'></textarea>
+      <br />
+      <label for='incognito'>Proxy Incognito Windows:</label>
+      <input type='checkbox' id='incognito' />
+      <label for='nincognito'>Proxy Normal Windows:</label>
+      <input type='checkbox' id='nincognito' />
+      <span class='info'>
+        To enable proxxy for incognito windows, you must also allow the
+        extension to run in incognito mode on the chrome://extensions page.
+      </span>
+    </div>
+    <h3>Off</h3>
+    <div class='section'>
+      <label for='off'>Reset proxy settings to:</label>
+      <select id='off'>
+        <option value='direct'>Direct</option>
+        <option value='system'>System</option>
+        <option value='auto_detect'>Auto Detect</option>
+      </select>
+      <span class='info'>
+        Direct will cause chrome to attempt all connections directly.  System
+        will cause chrome to attempt to follow system settings, and behave in
+        the same way as the rest of your system.  Auto Detect will cause chrome
+        to attempt to find and make use of network advertised configurations
+        in addition to system proxies.  Auto Detect is the default setting.
+      </span>
+    </div>
+    <input type='button' onclick="save()" value='save' />
   </div>
 </body>
 </html>

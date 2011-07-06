@@ -16,7 +16,7 @@
     }
     chrome.proxy.settings.set({
       'value': proxysettings,
-      'scope': (!!localStorage['incognito']) ? 'incognito_persistent' : 'regular'
+      'scope': (localStorage['incognito']=='checked') ? 'incognito_persistent' : 'regular'
     }, function() {});
   }
 

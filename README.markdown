@@ -14,17 +14,16 @@ can't be added to the webstore yet.
 Installation
 ===========
 
-1. Make sure you're on the Development Channel of Chrome.
+1. Navigate to chrome://flags. Turn on 'Experimental Extension APIs' (and restart chrome)
+  Note: this step is no longer needed on beta and dev channels.
 
-2. Navigate to chrome://flags. Turn on 'Experimental Extension APIs' (and restart chrome)
-
-3. Navigate to chrome://extensions, and under the Development mode header, click 'Load unpacked extension...'.  Navigate and choose this folder.
+2. Navigate to chrome://extensions, and under the Development mode header, click 'Load unpacked extension...'.  Navigate and choose this folder.
 
 
 Options
 =======
 
-There is a very bare-bones options page distributed with the extension.
-On this page you can configure the proxy rule that is toggled on and off,
-or choose whether the proxy toggle should modify settings for the entire
-browser, or just for incognito mode.
+The options page will let you configure the the value and scope for the toggle.
+For development of offline applications, it is often useful to only have your incognito windows be
+proxied, and it is also potentially useful to force the 'off' mode of the proxy to mean that
+you want to make direct connections, even if your network or system uses a proxy by default.

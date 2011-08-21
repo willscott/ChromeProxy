@@ -2,22 +2,65 @@
 <head>
 <script>
   var state = 0;
+
+  function getScope() {
+    return (localStorage['incognito'] == 'checked') ?
+        'incognito_persistent' : 'regular';
+  }
+
+  function getProxy(k) {
+    var sval = localStorage[k + '-scheme'] || 'HTTP';
+    sval = sval == 'HTTP' ? 'http' :
+        sval == 'HTTPS' ? 'https' :
+        sval == 'SOCKS 5' ? 'socks5' :
+        'socks4';
+    return {
+      scheme: sval,
+      host: localStorage[k + '-host'] || '127.0.0.1',
+      port: parseInt(localStorage[k + '-port'] || '8080')
+    };
+  }
+
   function setProxy() {
-    var proxysettings = {mode:localStorage['off'] || 'system'};
-    chrome.browserAction.setBadgeText({text:"off"});
     if (state) {
-      chrome.browserAction.setBadgeText({text:"on"});
-      proxysettings['mode'] = 'fixed_servers';
-      var txtrule = localStorage['txtrule'];
-      if (!txtrule) {
-        txtrule = localStorage['txtrule'] = "{singleProxy:{scheme:'http',host:'127.0.0.1',port:8080}}";
+      chrome.browserAction.setBadgeText({
+        text: "on"
+      });
+      var proxysettings = {
+        mode: 'fixed_servers',
+        rules: {}
+      };
+      if (localStorage['mode'] == 'custom') {
+        var fields = {
+          'hp': 'proxyForHttp',
+          'hsp': 'proxyForHttps',
+          'ftp': 'proxyForFtp',
+          'fbp': 'fallbackProxy'
+        };
+        for (var key in fields) {
+          proxySettings.rules[fields[key]] = getProxy(k);
+        }
+      } else {
+        proxysettings.rules['singleProxy'] = getProxy('sp');
       }
-      proxysettings['rules'] = eval('(' + txtrule + ')');
+      chrome.proxy.settings.set({
+        'value': proxysettings,
+        'scope': getScope()
+      }, function() {});
+    } else {
+      chrome.browserAction.setBadgeText({
+        text: "off"
+      });
+      if (localStorage['off'] in ['system','auto_detect','direct']) {
+        var proxysettings = {mode: localStorage['off']};
+        chrome.proxy.settings.set({
+          'value': proxysettings,
+          'scope': getScope()
+        }, function() {});
+      } else {
+        chrome.proxy.settings.clear({});
+      }
     }
-    chrome.proxy.settings.set({
-      'value': proxysettings,
-      'scope': (localStorage['incognito']=='checked') ? 'incognito_persistent' : 'regular'
-    }, function() {});
   }
 
   function flipState() {
@@ -26,7 +69,7 @@
   }
 
   chrome.browserAction.setIcon({path:"icon-19.png"});
-  chrome.browserAction.setBadgeBackgroundColor({color:[110,140,180,255]});
+  chrome.browserAction.setBadgeBackgroundColor({color:[110,140,180,180]});
   chrome.browserAction.onClicked.addListener(flipState);
   setProxy();
 </script>

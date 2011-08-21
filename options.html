@@ -2,68 +2,77 @@
 <head>
 <script>
   function save() {
-    localStorage['incognito'] = document.getElementById('incognito').checked;
-    localStorage['nincognito'] = document.getElementById('nincognito').checked;
-    localStorage['txtrule'] = document.getElementById('rules').value;
+    localStorage['incognito'] = document.getElementById('incognito').checked ?
+      'checked' : 0;
     localStorage['off'] = document.getElementById('off').value;
+    if (document.getElementById('srule').style.display == 'none') {
+      localStorage['mode'] = 'custom';
+    } else {
+      localStorage['mode'] = 'single';
+    }
+    var fields = ['sp','hp', 'hsp', 'ftp', 'fbp'];
+    for (k in fields) {
+      var div = document.getElementById(fields[k]);
+      var scheme = div.getElementsByTagName('select')[0].value;
+      localStorage[fields[k] + '-scheme'] = scheme;
+
+      var tb = div.getElementsByTagName('input');
+      localStorage[fields[k] + '-host'] = tb[0].value;
+      localStorage[fields[k] + '-port'] = tb[1].value;
+    }
   }
+
+  function serv(el) {
+    var rtype = el.id;
+    var padder = document.createElement('span');
+    var scheme = document.createElement('select');
+    scheme.add(new Option('HTTP'));
+    scheme.add(new Option('HTTPS'));
+    scheme.add(new Option('SOCKS 4'));
+    scheme.add(new Option('SOCKS 5'));
+    padder.appendChild(scheme);
+    scheme.value = localStorage[rtype + '-scheme'] || 'HTTP';
+
+    var host = document.createElement('input');
+    host.value = localStorage[rtype + '-host'] || '127.0.0.1';
+    padder.appendChild(host);
+
+    var port = document.createElement('input');
+    port.size=6;
+    port.value = localStorage[rtype + '-port'] || '8080';
+    padder.appendChild(port);
+    el.appendChild(padder);
+  }
+
+  function ab () {
+    document.getElementById('srule').style.display='none';
+    document.getElementById('mrule').style.display='block';
+  }
+
+  function ba () {
+    document.getElementById('srule').style.display='block';
+    document.getElementById('mrule').style.display='none';
+  }
+
   window.onload = function() {
-    document.getElementById('rules').value=localStorage['txtrule'] || "{singleProxy:{scheme:'http',host:'127.0.0.1',port:8080}}";
-    document.getElementById('incognito').checked=(localStorage['incognito']=='checked');
-    document.getElementById('off').value=localStorage['off'] || 'system';
-    document.getElementById('logo').src=chrome.extension.getURL('icon-128.png');
+    document.getElementById('incognito').checked =
+       (localStorage['incognito'] == 'checked');
+    document.getElementById('off').value = localStorage['off'] || 'clear';
+    document.getElementById('logo').src =
+        chrome.extension.getURL('icon-128.png');
+    document.getElementById('srulem').onclick=ab;
+    serv(document.getElementById('sp'));
+    document.getElementById('mrules').onclick=ba;
+    serv(document.getElementById('hp'));
+    serv(document.getElementById('hsp'));
+    serv(document.getElementById('ftp'));
+    serv(document.getElementById('fbp'));
+    if (localStorage['mode'] == 'custom') {
+      ab();
+    }
   }
 </script>
-<style type='text/css'>
-  #logo {
-    float: left;
-  }
-  body {
-    font-family:helvetica;
-  }
-  label {
-    vertical-align:top;
-    margin-left:10px;
-    display:inline-block;
-    width:200px;
-    text-align:right;
-  }
-  textarea {
-    width:400px;
-    height:100px;
-  }
-  input[type=button] {
-    margin-top:15px;
-    margin-left:200px;
-  }
-  div.content {
-    position:relative;
-    float:left;
-  }
-  div.section {
-    background:#ccc;
-    width:600px;
-    border-radius: 15px;
-    padding-top:10px;
-    padding-bottom:10px;
-    margin-left:10px;
-  }
-  h2 {
-    margin-top:0;
-    margin-left:10px;
-  }
-  h3 {
-    margin-left:20px;
-    margin-bottom:0;
-    line-height:0.75em;
-  }
-  span.info {
-    color:#333;
-    font-size:small;
-    display:block;
-    padding:15px;
-  }
-</style>
+<link rel="stylesheet" type="text/css" href="styles.css" />
 <title>Proxxy</title>
 </head>
 <body>
@@ -72,12 +81,21 @@
     <h2>Proxxy Settings</h2>
     <h3>On</h3>
     <div class='section'>
-      <textarea id='rules'></textarea>
+      <div id='srule' class='rules'>
+        <a class='button' id='srulem'>+</a><span id='sp'>
+        Single Proxy</span>
+      </div>
+      <div id='mrule' class='rules'>
+        <a class='button' id='mrules'>-</a><span id='hp'>
+        HTTP Proxy</span><span id='hsp'>
+        HTTPS Proxy</span><span id='ftp'>
+        FTP Proxy</span><span id='fbp'>
+        Fallback Proxy</span>
+      </div>
+      <div style='clear:both;'></div>
       <br />
-      <label for='incognito'>Proxy Incognito Windows:</label>
+      <label for='incognito'>Only proxy incognito windows:</label>
       <input type='checkbox' id='incognito' />
-      <label for='nincognito'>Proxy Normal Windows:</label>
-      <input type='checkbox' id='nincognito' />
       <span class='info'>
         To enable proxxy for incognito windows, you must also allow the
         extension to run in incognito mode on the chrome://extensions page.
@@ -85,18 +103,17 @@
     </div>
     <h3>Off</h3>
     <div class='section'>
-      <label for='off'>Reset proxy settings to:</label>
+      <label for='off'>When off:</label>
       <select id='off'>
-        <option value='direct'>Direct</option>
-        <option value='system'>System</option>
-        <option value='auto_detect'>Auto Detect</option>
+        <option value='clear'>Return Control</option>
+        <option value='direct'>Force direct connection</option>
+        <option value='system'>Force system configuration</option>
+        <option value='auto_detect'>Foruce use of wpad proxy</option>
       </select>
       <span class='info'>
-        Direct will cause chrome to attempt all connections directly.  System
-        will cause chrome to attempt to follow system settings, and behave in
-        the same way as the rest of your system.  Auto Detect will cause chrome
-        to attempt to find and make use of network advertised configurations
-        in addition to system proxies.  Auto Detect is the default setting.
+        Return control will cause the extension to clear all proxy settings, and
+        allow chrome to use default settings.  The other options will force the
+        use of specific types of 'unproxied' communication.
       </span>
     </div>
     <input type='button' onclick="save()" value='save' />

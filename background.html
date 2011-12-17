@@ -1,7 +1,7 @@
 <html>
 <head>
 <script>
-  var state = 0;
+  var state = localStorage['state'] || 0;
 
   function getScope() {
     return (localStorage['incognito'] == 'checked') ?
@@ -22,6 +22,7 @@
   }
 
   function setProxy() {
+    state = localStorage['state'] || 0;
     if (state) {
       chrome.browserAction.setBadgeText({
         text: "on"
@@ -64,7 +65,9 @@
   }
 
   function flipState() {
+    state = localStorage['state'] || 0;
     state = !state;
+    localStorage['state'] = state;
     setProxy();
   }
 

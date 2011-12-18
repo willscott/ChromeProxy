@@ -22,8 +22,8 @@
   }
 
   function setProxy() {
-    state = localStorage['state'] || 0;
-    if (state) {
+    state = localStorage['state'] || "false";
+    if (state != "false") {
       chrome.browserAction.setBadgeText({
         text: "on"
       });
@@ -65,8 +65,12 @@
   }
 
   function flipState() {
-    state = localStorage['state'] || 0;
-    state = !state;
+    state = localStorage['state'] || "false";
+    if (state == "false") {
+      state = "true";
+    } else {
+      state = "false";
+    }
     localStorage['state'] = state;
     setProxy();
   }
@@ -74,6 +78,11 @@
   chrome.browserAction.setIcon({path:"icon-19.png"});
   chrome.browserAction.setBadgeBackgroundColor({color:[110,140,180,180]});
   chrome.browserAction.onClicked.addListener(flipState);
+  chrome.extension.onRequest.addListener(
+    function(request, sender, sendResponse) {
+      setProxy();
+      sendResponse();
+    });
   setProxy();
 </script>
 </head>

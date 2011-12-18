@@ -20,6 +20,9 @@
       localStorage[fields[k] + '-host'] = tb[0].value;
       localStorage[fields[k] + '-port'] = tb[1].value;
     }
+    chrome.extension.sendRequest({}, function(response) {
+      //TODO(willscott): Notify settings have taken effect.
+    });
   }
 
   function serv(el) {

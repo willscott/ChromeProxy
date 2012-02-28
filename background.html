@@ -59,7 +59,7 @@
           'scope': getScope()
         }, function() {});
       } else {
-        chrome.proxy.settings.clear({});
+        chrome.proxy.settings.clear({'scope': getScope()});
       }
     }
   }

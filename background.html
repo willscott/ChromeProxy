@@ -2,6 +2,7 @@
 <head>
 <script>
   var state = localStorage['state'] || 0;
+  var saved_state = 0;
 
   function getScope() {
     return (localStorage['incognito'] == 'checked') ?
@@ -80,7 +81,12 @@
   chrome.browserAction.onClicked.addListener(flipState);
   chrome.extension.onRequest.addListener(
     function(request, sender, sendResponse) {
-      setProxy();
+      if (request['cmd'] == 'start_save') {
+        saved_state = state;
+        state ? flipState() : setProxy();
+      } else {
+        saved_state ? flipState() : setProxy();
+      }
       sendResponse();
     });
   setProxy();

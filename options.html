@@ -2,6 +2,10 @@
 <head>
 <script>
   function save() {
+    chrome.extension.sendRequest({'cmd':'start_save'}, real_save);
+  }
+
+  function real_save() {
     localStorage['incognito'] = document.getElementById('incognito').checked ?
       'checked' : 0;
     localStorage['off'] = document.getElementById('off').value;
@@ -20,7 +24,7 @@
       localStorage[fields[k] + '-host'] = tb[0].value;
       localStorage[fields[k] + '-port'] = tb[1].value;
     }
-    chrome.extension.sendRequest({}, function(response) {
+    chrome.extension.sendRequest({'cmd':'end_save'}, function(response) {
       //TODO(willscott): Notify settings have taken effect.
     });
   }

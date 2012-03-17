@@ -19,10 +19,9 @@ For user installation, the best way to install the extension is from the chrome
 web store.  The web store will provide you with automatic updates, and won't require
 enabling non-webstore extensions.
 
-1. Navigate to chrome://flags. Turn on 'Experimental Extension APIs' (and restart chrome)
-  Note: this step is no longer needed on beta and dev channels.
-
-2. Navigate to chrome://extensions, and under the Development mode header, click 'Load unpacked extension...'.  Navigate and choose this folder.
+Otherwise, create a local repository for the project, then navigate to
+chrome://extensions, and under the Development mode header, click
+'Load unpacked extension...'.  Navigate and choose the downloaded folder.
 
 
 Options

@@ -1,7 +1,8 @@
 Chrome Proxy
 ===========
 
-This is a quick extension to toggle your chrome proxy settings from the toolbar.
+This extension provides a toggle for your chrome proxy settings.
+
 
 It's useful if you need to work with an intercepting proxy, or if you want
 to simulate taking your browser offline.
@@ -13,6 +14,10 @@ can't be added to the webstore yet.
 
 Installation
 ===========
+
+For user installation, the best way to install the extension is from the chrome
+web store.  The web store will provide you with automatic updates, and won't require
+enabling non-webstore extensions.
 
 1. Navigate to chrome://flags. Turn on 'Experimental Extension APIs' (and restart chrome)
   Note: this step is no longer needed on beta and dev channels.

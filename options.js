@@ -27,6 +27,15 @@ function real_save() {
   });
 }
 
+function clear() {
+  document.getElementById('clear').disabled='true';
+  chrome.extension.sendRequest({'cmd':'clear'}, real_clear);
+}
+
+function real_clear() {
+  document.getElementById('clear').disabled='';
+}
+
 function serv(el) {
   var rtype = el.id;
   var padder = document.createElement('span');
@@ -76,4 +85,5 @@ window.onload = function() {
     ab();
   }
   document.getElementById('save').addEventListener('click', save, false);
+  document.getElementById('clear').addEventListener('click', clear, false);
 }

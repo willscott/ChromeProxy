@@ -19,6 +19,9 @@
     margin-top:15px;
     margin-left:200px;
   }
+  #clear {
+    margin-left:10px;
+  }
   div.content {
     position:relative;
     float:left;

@@ -62,6 +62,12 @@ function setProxy() {
   }
 }
 
+function clearProxy() {
+  chrome.proxy.settings.clear({'scope': 'regular'});
+  chrome.proxy.settings.clear({'scope': 'incognito_persistent'});
+  chrome.proxy.settings.clear({'scope': 'incognito_session_only'});
+}
+
 function flipState() {
   state = localStorage['state'] || "false";
   if (state == "false") {
@@ -81,7 +87,9 @@ chrome.extension.onRequest.addListener(
     if (request['cmd'] == 'start_save') {
       saved_state = state;
       state ? flipState() : setProxy();
-    } else {
+    } else if (request['cmd'] == 'clear') {
+      clearProxy();
+    } else { //end save
       saved_state ? flipState() : setProxy();
     }
     sendResponse();

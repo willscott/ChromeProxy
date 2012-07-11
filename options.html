@@ -7,9 +7,11 @@
 <body>
   <img id="logo" alt="proxxy logo"/>
   <div class='content'>
-    <h2>Proxxy Settings</h2>
-    <h3>On</h3>
-    <div class='section'>
+    <header>
+      <h1 i18n-content="title">Proxxy Settings</h1>
+    </header>
+    <section id="active">
+    <h3 i18n-content="sectionTitleProxy">Proxy</h3>
       <div id='srule' class='rules'>
         <a class='button' id='srulem'>+</a><span id='sp'>
         Single Proxy</span>
@@ -22,31 +24,26 @@
         Fallback Proxy</span>
       </div>
       <div class='nl'></div>
-      <br />
-      <label for='incognito'>Only proxy incognito windows:</label>
-      <input type='checkbox' id='incognito' />
-      <span class='info'>
-        To enable proxxy for incognito windows, you must also allow the
-        extension to run in incognito mode on the chrome://extensions page.
-      </span>
-    </div>
-    <h3>Off</h3>
-    <div class='section'>
-      <label for='off'>When off:</label>
+    </section>
+    <section id="other">
+      <h3 i18n-content="sectionTitleSystem">System</h3>
+      <div class='checkbox'>
+        <input type='checkbox' id='incognito' />
+        <label for='incognito'>Only proxy incognito windows</label>
+      </div>
+      <label for='off'>Behavior when unsetting proxy</label>
+      <div class='nl'></div>
       <select id='off'>
         <option value='clear'>Return Control</option>
         <option value='direct'>Force direct connection</option>
         <option value='system'>Force system configuration</option>
-        <option value='auto_detect'>Foruce use of wpad proxy</option>
+        <option value='auto_detect'>Force use of wpad proxy</option>
       </select>
-      <span class='info'>
-        Return control will cause the extension to clear all proxy settings, and
-        allow chrome to use default settings.  The other options will force the
-        use of specific types of 'unproxied' communication.
-      </span>
-    </div>
-    <input type='button' id='save' value='Save' />
-    <input type='button' id='clear' value="Clear Chrome's proxy settings" />
+    </section>
+    <section>
+      <input type='button' id='save' value='Save' />
+      <input type='button' id='clear' value="Clear Chrome's proxy settings" />
+    </section>
   </div>
 </body>
 </html>

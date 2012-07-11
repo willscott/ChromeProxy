@@ -48,10 +48,12 @@ function serv(el) {
   scheme.value = localStorage[rtype + '-scheme'] || 'HTTP';
 
   var host = document.createElement('input');
+  host.type = "text";
   host.value = localStorage[rtype + '-host'] || '127.0.0.1';
   padder.appendChild(host);
 
   var port = document.createElement('input');
+  port.type = "text";
   port.size=6;
   port.value = localStorage[rtype + '-port'] || '8080';
   padder.appendChild(port);

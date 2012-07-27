@@ -1,4 +1,5 @@
 function save() {
+  window.proxyList.save();
   document.getElementById('save').disabled='true';
   chrome.extension.sendRequest({'cmd':'start_save'}, real_save);
 }
@@ -71,7 +72,7 @@ function ba () {
 }
 
 window.onload = function() {
-  window.proxyList = new proxyList(document.getElementById('proxy-list'));
+  window.proxyList = proxyList.getInstance(document.getElementById('proxy-list'));
   document.getElementById('addButton').addEventListener('click', function(e) {
     if (e.altKey) {
       window.proxyList.addComplex();

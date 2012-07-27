@@ -42,3 +42,38 @@ proxyList.prototype.addByName = function(string) {
     }
   }.bind(this);
 };
+
+proxyList.prototype.select = function(string) {
+  for (var i = 0; i < this.proxies.length; i++) {
+    if (this.proxies[i].toString() == string) {
+      this.proxies[i].element.setAttribute('selected', true);
+      break;
+    }
+  }
+};
+
+proxyList.prototype.save = function() {
+  var p = "";
+  var ps = [];
+  for (var i = 0; i < this.proxies.length; i++) {
+    ps.push(this.proxies[i].toString());
+    if (this.proxies[i].element.getAttribute('selected')) {
+      p = this.proxies[i].toString();
+    }
+  }
+  localStorage['proxies'] = JSON.stringify(ps);
+  localStorage['proxy'] = p;
+};
+
+proxyList.getInstance = function(el) {
+  var pl = new proxyList(el);
+  if(localStorage['proxies'] != undefined) {
+    var array = JSON.parse(localStorage['proxies']);
+    for (var i = 0; i < array.length; i++) {
+      pl.addByName(array[i]);
+    }
+    pl.select(localStorage['proxy']);
+  }
+
+  return pl;
+};

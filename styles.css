@@ -90,6 +90,8 @@
   #mrule {
     display:none;
   }
+
+
   .rules > span {
     float:left;
     clear:left;
@@ -117,6 +119,8 @@
   list {
     border: 1px solid #d9d9d9;
     border-radius: 2px;
+    max-height: 350px;
+    overflow-y: scroll;
   }
 
   list .empty {

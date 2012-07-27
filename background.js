@@ -6,20 +6,57 @@ function getScope() {
       'incognito_persistent' : 'regular';
 }
 
-function getProxy(k) {
-  var sval = localStorage[k + '-scheme'] || 'HTTP';
-  sval = sval == 'HTTP' ? 'http' :
-      sval == 'HTTPS' ? 'https' :
-      sval == 'SOCKS 5' ? 'socks5' :
-      'socks4';
+function splitProxy(string) {
+  var parts = /(.*):\/\/(.*):(.*)/g.exec(string);
   return {
-    scheme: sval,
-    host: localStorage[k + '-host'] || '127.0.0.1',
-    port: parseInt(localStorage[k + '-port'] || '8080')
+    scheme: parts[1],
+    host: parts[2],
+    port: parseInt(parts[3])
   };
 }
 
+function loadProxy(rules) {
+  var proxy = localStorage['proxy'] || 'http://localhost:8080';
+  if (proxy.indexOf(",") > -1) {
+    var items = proxy.split(",");
+    var keys = ['proxyForHttp', 'proxyForHttps', 'proxyForFtp', 'fallbackProxy'];
+    for (var i = 0; i < keys.length; i++) {
+      rules[keys[i]] = splitProxy(items[i]);
+    }
+  } else {
+    rules['singleProxy'] = splitProxy(proxy);
+  }
+}
+
+function migrate() {
+  var toStr = function(box) {
+    var scheme = localStorage[box + '-scheme'] || 'http';
+    var host = localStorage[box + '-host'] || '127.0.0.1';
+    var port = localStorage[box + '-port'] || '8080';
+    return scheme + "://" + host + ":" + port;
+  };
+  if (localStorage['mode'] == 'custom') {
+    var hp = toStr('hp');
+    var hsp = toStr('hsp');
+    var ftp = toStr('ftp');
+    var fbp = toStr('fbp');
+    var proxy = hp + ',' + hsp + ',' + ftp + ',' + fbp;
+    localStorage['proxy'] = proxy;
+    localStorage['proxies'] = JSON.stringify([proxy]);
+  } else {
+    var proxy = toStr('sp');
+    localStorage['proxy'] = proxy;
+    localStorage['proxies'] = JSON.stringify([proxy]);
+  }
+  delete localStorage['mode'];
+};
+
 function setProxy() {
+  if (!localStorage['proxy'] && localStorage['mode'] == 'custom' ||
+      localStorage['mode'] == 'single') {
+    migrate();
+  }
+
   state = localStorage['state'] || "false";
   if (state != "false") {
     chrome.browserAction.setBadgeText({
@@ -29,19 +66,9 @@ function setProxy() {
       mode: 'fixed_servers',
       rules: {}
     };
-    if (localStorage['mode'] == 'custom') {
-      var fields = {
-        'hp': 'proxyForHttp',
-        'hsp': 'proxyForHttps',
-        'ftp': 'proxyForFtp',
-        'fbp': 'fallbackProxy'
-      };
-      for (var key in fields) {
-        proxysettings.rules[fields[key]] = getProxy(key);
-      }
-    } else {
-      proxysettings.rules['singleProxy'] = getProxy('sp');
-    }
+
+    loadProxy(proxysettings.rules);
+
     chrome.proxy.settings.set({
       'value': proxysettings,
       'scope': getScope()

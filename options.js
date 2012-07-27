@@ -72,6 +72,9 @@ function ba () {
 
 window.onload = function() {
   window.proxyList = new proxyList(document.getElementById('proxy-list'));
+  document.getElementById('addButton').addEventListener('click', function() {
+    window.proxyList.add();
+  }, false);
 
   document.getElementById('incognito').checked =
      (localStorage['incognito'] == 'checked');

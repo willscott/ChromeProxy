@@ -105,6 +105,13 @@
   .nl {
     clear: both;
   }
+  
+  .list-tooltip {
+    line-height: 30px;
+    color: #888;
+    text-align: right;
+    padding-right: 15px;
+  }
 
   /* list */
   list {

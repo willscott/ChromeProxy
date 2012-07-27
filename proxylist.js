@@ -18,8 +18,16 @@ proxyList.prototype.init = function() {
   }, false);
 };
 
+proxyList.prototype.addComplex = function() {
+  this.addByName("http://localhost:8080,http://localhost:8080,http://localhost:8080,http://localhost:8080");
+};
+
 proxyList.prototype.add = function() {
-  var p = proxy.fromString("http://localhost:8080");
+  this.addByName("http://localhost:8080");
+};
+
+proxyList.prototype.addByName = function(string) {
+  var p = proxy.fromString(string);
   this.proxies.push(p);
   p.render(this.element);
   p.onRemove = function() {

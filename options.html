@@ -1,5 +1,7 @@
 <html>
 <head>
+<script src="proxy.js"></script>
+<script src="proxylist.js"></script>
 <script src="options.js"></script>
 <link rel="stylesheet" type="text/css" href="styles.css" />
 <title>Proxxy</title>
@@ -12,6 +14,14 @@
     </header>
     <section id="active">
     <h3 i18n-content="sectionTitleProxy">Proxy</h3>
+    <list id="proxy-list" role="listbox" tabindex="0" has-element-focus="hasElementFocus">
+    <div class="spacer"></div>
+      <div role="listitem" class="deletable-item">
+        <div>http://localhost:8080</div>
+        <button class="row-delete-button custom-appearance" tabindex="-1"></button>
+      </div>
+    <div class="spacer"></div>
+    </list>
       <div id='srule' class='rules'>
         <a class='button' id='srulem'>+</a><span id='sp'>
         Single Proxy</span>

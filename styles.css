@@ -1,9 +1,14 @@
+  @import url("chrome_shared.css");
+  @import url("list.css");
+
   #logo {
     position: absolute;
+    left: 0;
   }
   body {
     font-family: 'Lucida Grande', sans-serif;
     font-size: 75%;
+    -webkit-margin-start: 155px;
   }
   label {
     vertical-align:top;
@@ -16,7 +21,7 @@
     position:relative;
     -webkit-padding-start: 18px;
     padding-top: 45px;
-    left: 200px;
+    padding-left: 0px;
     width: 738px;
   }
   div.checkbox {
@@ -28,12 +33,23 @@
     color: #303942;
     margin-top:0;
     margin-left:0px;
-    width: 738px;
-    left: 226px;
+    max-width: 738px;
+    min-width: 600px;
+    left: 155px;
     background: -webkit-linear-gradient(top, white, white 40%,
-      rgba(255, 255, 255, 0.917969));
-    z-index: 2;
+      rgba(255, 255, 255, 0.92));
+    z-index: 3;
   }
+  header h1::after {
+    -webkit-margin-end: 20px;
+    background-color: #eee;
+    content: ' ';
+    display: block;
+    height: 1px;
+    position: relative;
+    top: 13px;
+  }
+
   section {
     -webkit-padding-start: 18px;
     margin-top: 8px;
@@ -41,28 +57,14 @@
     display: block;
     max-width: 610px;
   }
-  h1, h2, h3 {
-    font-weight: normal;
-    line-height: 1;
-    -webkit-user-select: none;
+  section:last-of-type {
+    margin-bottom: 0px;
   }
   h1 {
     padding-top: 5px;
-    font-size: 1.5em;
   }
-  h3 {
-    font-size: 1.2em;
+  section > h3 {
     margin-left:-18px;
-    margin-bottom: 0.8em;
-  }
-  header h1::after {
-    -webkit-margin-end: 2px;
-    background-color: #eee;
-    content: ' ';
-    display: block;
-    height: 1px;
-    position: relative;
-    top: 13px;
   }
   span.info {
     color:#333;
@@ -103,68 +105,164 @@
   .nl {
     clear: both;
   }
-  
-  input[type="text"] {
-    border: 1px solid #bfbfbf;
+
+  /* list */
+  list {
+    border: 1px solid #d9d9d9;
     border-radius: 2px;
-    box-sizing: border-box;
-    color: #444;
-    font-inherit;
-    margin: 0;
-    min-height: 2em;
-    padding: 3px;
-    padding-bottom: 4px;
-    -webkit-user-select: text;
-  }
-  select {
-    -webkit-appearance: none;
-    -webkit-padding-end: 20px;
-    -webkit-padding-start: 6px;
-    background-image: -webkit-linear-gradient(#EDEDED, #EDEDED 38%, #DEDEDE);
-    min-height: 2em;
-    min-width: 4em;
-    -webkit-user-select: none;
-    border: 1px solid rgba(0, 0, 0, 0.25);
-    border-radius: 2px;
-    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.08), inset 0 1px 2px rgba(255, 255, 255, 0.75);
-    color: #444;
-    font: inherit;
-    margin: 0 1px 0 0;
-    text-shadow: 0 1px 0 #F0F0F0;
   }
 
-  input:focus,
-  select:focus {
-    -webkit-transition: border-color 200ms;
-    border-color:rgb(77, 144, 254);
-    outline: none;
+  list .empty {
+    background-color: #f4f4f4;
+    box-sizing: border-box;
+    min-height: 125px;
+    padding-left: 20px;
+    padding-top: 20px;
   }
-  
-  input[type="button"] {
-    -webkit-user-select: none;
-    background-image: -webkit-linear-gradient(#EDEDED, #EDEDED 38%, #DEDEDE);
-    border: 1px solid rgba(0, 0, 0, 0.25);
-    border-radius: 2px;
-    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.08), inset 0 1px 2px rgba(255, 255, 255, 0.75);
-    color: #444;
-    font: inherit;
-    margin: 0 1px 0 0;
-    text-shadow: 0 1px 0 #F0F0F0;
-    min-height: 2em;
-    min-width: 4em;
-    -webkit-padding-end: 10px;
-    -webkit-padding-start: 10px;
+
+  list > * {
+    -webkit-box-align: center;
+    -webkit-transition: 150ms background-color;
+    border: none;
+    border-radius: 0;  /* TODO(dbeam): Is this necessary? */
+    box-sizing: border-box;
+    display: -webkit-box;
+    height: 32px;
+    margin: 0;
   }
-  input[type="button"]:hover {
-    background-image: -webkit-linear-gradient(#f0f0f0, #f0f0f0 38%, #e0e0e0);
-    border-color: rgba(0, 0, 0, 0.3);
-    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.12),
-      inset 0 1px 2px rgba(255, 255, 255, 0.95);
-    color: black;
+
+  list > .spacer {
+    /* The above height rule should not apply to spacers. When redraw is called
+       on the list they will be given an explicit element height but this ensures
+       they have 0 height to begin with. */
+    height: 0;
   }
-  input[type="button"]:active {
-    background-image: -webkit-linear-gradient(#e7e7e7, #e7e7e7 38%, #d7d7d7);
-    box-shadow: none;
-    text-shadow: none;
+
+  list:not([disabled]) > :hover {
+    background-color: rgb(228, 236, 247);
   }
-  
+
+  list:not([hasElementFocus]) > [selected],
+  list:not([hasElementFocus]) > [lead][selected] {
+    background-color: #d0d0d0;
+    background-image: none;
+  }
+
+  list[hasElementFocus] > [selected],
+  list[hasElementFocus] > [lead][selected],
+  list:not([hasElementFocus]) > [selected]:hover,
+  list:not([hasElementFocus]) > [selected][lead]:hover {
+    background-color: rgb(187, 206, 233);
+    background-image: none;
+  }
+
+  list[hasElementFocus] > [lead],
+  list[hasElementFocus] > [lead][selected] {
+    border-bottom: 1px solid rgb(120, 146, 180);
+    border-top: 1px solid rgb(120, 146, 180);
+  }
+
+  list[hasElementFocus] > [lead]:nth-child(2),
+  list[hasElementFocus] > [lead][selected]:nth-child(2) {
+    border-top: 1px solid transparent;
+  }
+
+  list[hasElementFocus] > [lead]:nth-last-child(2),
+  list[hasElementFocus] > [lead][selected]:nth-last-child(2) {
+    border-bottom: 1px solid transparent;
+  }
+
+  list[disabled] > [lead][selected],
+  list[disabled]:focus > [lead][selected] {
+    border: none;
+  }
+
+  list[disabled] {
+    opacity: 0.6;
+  }
+
+  list > .heading {
+    color: #666;
+  }
+
+  list > .heading:hover {
+    background-color: transparent;
+    border-color: transparent;
+  }
+
+  list .deletable-item {
+    -webkit-box-align: center;
+  }
+
+  list .deletable-item > :first-child {
+    -webkit-box-align: center;
+    -webkit-box-flex: 1;
+    -webkit-padding-end: 5px;
+    display: -webkit-box;
+  }
+
+  list .row-delete-button {
+    -webkit-transition: 150ms opacity;
+    background-color: transparent;
+    /* TODO(stuartmorgan): Replace with real images once they are available. */
+    background-image: -webkit-image-set(
+      url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAQAAAC1+jfqAAAAiElEQVR42r2RsQrDMAxEBRdl8SDcX8lQPGg1GBI6lvz/h7QyRRXV0qUULwfvwZ1tenw5PxToRPWMC52eA9+WDnlh3HFQ/xBQl86NFYJqeGflkiogrOvVlIFhqURFVho3x1moGAa3deMs+LS30CAhBN5nNxeT5hbJ1zwmji2k+aF6NENIPf/hs54f0sZFUVAMigAAAABJRU5ErkJggg==") 1x);
+    border: none;
+    display: block;
+    height: 16px;
+    opacity: 1;
+    width: 16px;
+  }
+
+  list > *:not(:hover):not([selected]):not([lead]) .row-delete-button,
+  list:not([hasElementFocus]) > *:not(:hover):not([selected]) .row-delete-button,
+  list[disabled] .row-delete-button,
+  list .row-delete-button[disabled] {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  list div[role='listitem'][managedby='HostedApp'] .row-delete-button {
+    opacity: 1;
+  }
+
+  list .row-delete-button:hover {
+    background-image: -webkit-image-set(
+        url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAQAAAC1+jfqAAAAqklEQVR4XqWRMQ6DMAxF/1Fyilyj2SmIBUG5QcTCyJA5Z8jGhlBPgRi4TmoDraVmKFJlWYrlp/g5QfwRlwEVNWVa4WzfH9jK6kCkEkBjwxOhLghheMWMELUAqqwQ4OCbnE4LJnhr5IYdqQt4DJQjhe9u4vBBmnxHHNzRFkDGjHDo0VuTAqy2vAG4NkvXXDHxbGsIGlj3e835VFNtdugma/Jk0eXq0lP//5svi4PtO01oFfYAAAAASUVORK5CYII=")
+            1x,
+        url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAQAAADZc7J/AAAB4UlEQVR42u2VsWoCQRBAh+MUFP0C1V9QD4NEOxs9xBQHQVCwSJFWVBAtBNXCxk6wTkBJYUTwEwQLC61E8QP0NzZzt5g5726DkC7EYWHZ8T3WndkV2C/jLwn4hwVYBIdLn9vkLp79QcBCTDMiy3w2gQ9XeTYkEHA8vqj2rworXu3HF1YFfSWgp5QFnKVLvYvzDEKEZ5hW70oXOCtcEbQLIkx7+IQtfMBSOjU6XEF4oyOdYInZbXyOuajjDlpNeQgleIUJKUz4BDMledhqOu/AzVSmzZ49CUjCC0yvim98iqtJT2L2jKsqczsdok9XrHNexaww415lnTNwn6CM/KxJIR8bnUZHPhLO6yMoIyk2pNjLewFuE5AiY1KMMQx8Q7hQYFek4AkjxXFe1rsF84I/BTFQMGL+1Lxwl4DwdtM1gjwKohgxyLtG7SYpxALqugOMcfOKN+bFXeBsLB1uulNcRqq7/tt36k41zoL6QlxGjtd6lrahiqCi1iOFYyvXuxY8yzK33VnvUivbLlOlj/jktm0s3YnXrNIXXufHNxuOGasi8S68zkwrlnV8ZcJJsTIUxbLgQcFZWE8N0gau2p40VVcM0gYeFpSRK6445UhBuKiRgiyKw+34rLt59nb1/7+RwReVkaFtqvNBuwAAAABJRU5ErkJggg==")
+            2x);
+  }
+
+  list .row-delete-button:active {
+    background-image: -webkit-image-set(
+        url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAQAAAC1+jfqAAAARElEQVQoz2P4z4AfMlBLAYMdwxkghgEwD1XBGTC0g0sDIaYJECVwFqoChBK4WegKkJWArSJZAQErCDqSKG/iCyhaRhYA9LDIbULDzlIAAAAASUVORK5CYII=")
+            1x,
+        url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAQAAADZc7J/AAAA/ElEQVR4Xu3UsWrCUBiG4efGlIBoIMFbcnYolYJ3pg4iKGrGYFTRwaUFhYAekiDt0EG++X2W83N8/3J/DbwBMJJSsdQItcDY1VlCOImzq3Ed8OmicHASB3ns5KBw8VUNpDJrW7uAiJ3sbK1l0mqArpmFTUlQ5jYWZrrUAUSmT0SZm4qoA56JvVhs/5g3A7RLolA85A1ASOTye65NMxASK6syfxGITMzvMxG9CvRkliWwlOm9AsSOcitzU1NzK7mjuBkQvHtLK7iLBiB5PhttJSGpB8I8vM6kDuiHeUjoVwMfYR4SRtUAw1veIZzOjRhSBzCoyKFjgH/3K7+BHzg+Cgw0eSW3AAAAAElFTkSuQmCC")
+            2x);
+  }
+
+  list .static-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  list[inlineeditable] input {
+    box-sizing: border-box;
+    margin: 0;
+    width: 100%;
+  }
+
+  list > :not([editing]) [displaymode='edit'] {
+    display: none;
+  }
+
+  list > [editing] [displaymode='static'] {
+    display: none;
+  }
+
+  list > [editing] input:invalid {
+    /* TODO(stuartmorgan): Replace with validity badge */
+    background-color: pink;
+  }

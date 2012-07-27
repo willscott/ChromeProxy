@@ -51,10 +51,19 @@ function migrate() {
   delete localStorage['mode'];
 };
 
+function setup() {
+  var proxy = "http://localhost:8080";
+  localStorage['proxy'] = proxy;
+  localStorage['proxies'] = JSON.stringify([proxy]);
+};
+
+
 function setProxy() {
   if (!localStorage['proxy'] && localStorage['mode'] == 'custom' ||
       localStorage['mode'] == 'single') {
     migrate();
+  } else if(!localStorage['proxy']) {
+    setup();
   }
 
   state = localStorage['state'] || "false";

@@ -223,6 +223,7 @@
     height: 16px;
     opacity: 1;
     width: 16px;
+    margin-right: 10px;
   }
 
   list > *:not(:hover):not([selected]):not([lead]) .row-delete-button,

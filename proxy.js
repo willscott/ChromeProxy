@@ -95,16 +95,15 @@ proxy.prototype.render = function(container) {
   this.makeEditor(editMode);
 
   var that = this;
-  viewMode.addEventListener('click', function() {
+  this.element.addEventListener('click', function() {
     if(that.element.getAttribute('selected') == null) {
       that.onSelect();
       that.element.setAttribute('selected', true);
-    } else {
+    } else if (that.element.getAttribute('editing') == null) {
       that.element.setAttribute('editing', true);
+    } else {
+      that.element.removeAttribute('editing');
     }
-  }, false);
-  editMode.addEventListener('click', function() {
-    that.element.removeAttribute('editing');
   }, false);
 
   this.container.appendChild(this.element);

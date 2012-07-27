@@ -9,7 +9,7 @@ function getScope() {
 function splitProxy(string) {
   var parts = /(.*):\/\/(.*):(.*)/g.exec(string);
   return {
-    scheme: parts[1],
+    scheme: cleanscheme(parts[1]),
     host: parts[2],
     port: parseInt(parts[3])
   };
@@ -26,14 +26,21 @@ function loadProxy(rules) {
   } else {
     rules['singleProxy'] = splitProxy(proxy);
   }
-}
+};
+
+function cleanscheme(s) {
+  s = s.toLowerCase();
+  if (s == "socks 4") s = "socks4";
+  if (s == "socks 5") s = "socks5";
+  return s;
+};
 
 function migrate() {
   var toStr = function(box) {
     var scheme = localStorage[box + '-scheme'] || 'http';
     var host = localStorage[box + '-host'] || '127.0.0.1';
     var port = localStorage[box + '-port'] || '8080';
-    return scheme + "://" + host + ":" + port;
+    return cleanscheme(scheme) + "://" + host + ":" + port;
   };
   if (localStorage['mode'] == 'custom') {
     var hp = toStr('hp');

@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Proxxy",
   "description": "Toggle proxy settings from your toolbar.",
-  "version": "1.2",
+  "version": "1.2.1",
   "background": {"scripts": ["background.js"]},
   "content_security_policy": "default-src 'self'; img-src 'self' data:",
   "offline_enabled": true,  

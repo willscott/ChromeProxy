@@ -26,12 +26,19 @@ function real_clear() {
   document.getElementById('clear').removeAttribute('disabled');
 }
 
+function cleanscheme(s) {
+  s = s.toLowerCase();
+  if (s == "socks 4") s = "socks4";
+  if (s == "socks 5") s = "socks5";
+  return s;
+};
+
 function migrate() {
   var toStr = function(box) {
     var scheme = localStorage[box + '-scheme'] || 'http';
     var host = localStorage[box + '-host'] || '127.0.0.1';
     var port = localStorage[box + '-port'] || '8080';
-    return scheme + "://" + host + ":" + port;
+    return cleanscheme(scheme) + "://" + host + ":" + port;
   };
   if (localStorage['mode'] == 'custom') {
     var hp = toStr('hp');

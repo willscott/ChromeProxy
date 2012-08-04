@@ -1,0 +1,74 @@
+{
+  "browserActionTitle": {
+    "message": "Proxxy!",
+    "description": "Title text for the browser action icon."
+  },
+  "browserActionOff": {
+    "message": "Off",
+    "description": "Icon overlay when not proxied. Up to 4 single-byte unicode characters allowed (see bug 83014)"
+  },
+  "browserActionOn": {
+    "message": "On",
+    "description": "Icon overlay when proxied. Up to 4 single-byte unicode characters allowed (see bug 83014)"
+  },
+  "extName": {
+    "message": "Proxxy",
+    "description": "Extension name."
+  },
+  "extDesc": {
+    "message": "切换代理设置从您的工具栏。",
+    "description": "Extension description."
+  },
+  "optHeader": {
+    "message": "Proxxy设定",
+    "description": "Options page Header."
+  },
+  "optTitle": {
+    "message": "Proxxy 代理",
+    "description": "Page title of the Options page."
+  },
+  "optProxyListHeader": {
+    "message": "代理选项",
+    "description": "Header for the list of proxies on the options page."
+  },
+  "optAddProxyButton": {
+    "message": "增加",
+    "description": "Add Proxy Button Text on the options page."
+  },
+  "optSystemHeader": {
+    "message": "系统",
+    "description": "Header for system settings on the options page."
+  },
+  "optIncognitoLabel": {
+    "message": "仅代理隐姓埋名窗口",
+    "description": "Label for the checkbox to only proxy incognito windows on the options page"
+  },
+  "optOffLabel": {
+    "message": "注销代理行为时，",
+    "description": "Label for the setting to choose behavior when proxy is turned off on the options page"
+  },
+  "optOffValueClear": {
+    "message": "返回控制",
+    "description": "Option indicating chrome can choose what to do when proxxy is disabled."
+  },
+  "optOffValueDirect": {
+    "message": "强制直接连接",
+    "description": "Option indicating that chrome should attempt to connect directly when proxxy is disabled."
+  },
+  "optOffValueSystem": {
+    "message": "配置力系",
+    "description": "Option indicating that chrome should use the system proxy settings when proxxy is disabled."
+  },
+  "optOffValueAuto": {
+    "message": "强制使用WPAD代理",
+    "description": "Option indicating that chrome should use a network wpad proxy when proxxy is disabled."
+  },
+  "optSaveButton": {
+    "message": "保存",
+    "description": "Button for saving proxy settings on the options page"
+  },
+  "optClearButton": {
+    "message": "清除代理服务器设置",
+    "description": "Button for clearing proxy settings on the options page"
+  }
+}

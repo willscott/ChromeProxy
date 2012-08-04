@@ -76,7 +76,7 @@ function setProxy() {
   state = localStorage['state'] || "false";
   if (state != "false") {
     chrome.browserAction.setBadgeText({
-      text: "on"
+      text: chrome.i18n.getMessage("browserActionOn")
     });
     var proxysettings = {
       mode: 'fixed_servers',
@@ -91,7 +91,7 @@ function setProxy() {
     }, function() {});
   } else {
     chrome.browserAction.setBadgeText({
-      text: "off"
+      text: chrome.i18n.getMessage("browserActionOff")
     });
     if (localStorage['off'] in ['system','auto_detect','direct']) {
       var proxysettings = {mode: localStorage['off']};

@@ -69,6 +69,33 @@ window.onload = function() {
   } else if(!localStorage['proxy']) {
     setup();
   }
+  
+  var i18nOptions = {
+    "optOffValues": [
+      ["clear", "optOffValueClear"],
+      ["direct", "optOffValueDirect"],
+      ["system", "optOffValueSystem"],
+      ["auto_detect", "optOffValueAuto"]
+    ]
+  };
+  
+  i18nTemplate.process(document, {
+    getString: function(key) {
+      return chrome.i18n.getMessage(key);
+    },
+    getValue: function(key) {
+      var options = i18nOptions[key];
+      var outOptions = [];
+      options.forEach(function(option) {
+        if (typeof option == 'string') {
+          outOptions.push(chrome.i18n.getMessage(option));
+        } else {
+          outOptions.push([option[0], chrome.i18n.getMessage(option[1])]);
+        }
+      });
+      return outOptions;
+    }
+  });
 
   window.proxyList = proxyList.getInstance(document.getElementById('proxy-list'));
   document.getElementById('addButton').addEventListener('click', function(e) {

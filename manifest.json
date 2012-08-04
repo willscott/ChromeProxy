@@ -1,17 +1,18 @@
 {
   "manifest_version": 2,
-  "name": "Proxxy",
-  "description": "Toggle proxy settings from your toolbar.",
+  "name": "__MSG_extName__",
+  "description": "__MSG_extDesc__",
   "version": "1.2.1",
   "background": {"scripts": ["background.js"]},
   "content_security_policy": "default-src 'self'; img-src 'self' data:",
+  "default_locale": "en",
   "offline_enabled": true,  
   "options_page": "options.html",
   "permissions": [
     "proxy"
   ],
   "browser_action": {
-      "name": "Click to proxy.",
+      "name": "__MSG_browserActionTitle__",
       "default_icon": "icon-19.png"
   },
   "icons": {

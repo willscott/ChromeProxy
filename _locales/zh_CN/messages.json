@@ -5,18 +5,18 @@
   },
   "browserActionOff": {
     "message": "Off",
-    "description": "Icon overlay when not proxied. Up to 4 single-byte unicode characters allowed (see bug 83014)"
+    "description": "Icon overlay when not proxied."
   },
   "browserActionOn": {
     "message": "On",
-    "description": "Icon overlay when proxied. Up to 4 single-byte unicode characters allowed (see bug 83014)"
+    "description": "Icon overlay when proxied."
   },
   "extName": {
     "message": "Proxxy",
     "description": "Extension name."
   },
   "extDesc": {
-    "message": "切换代理设置从您的工具栏。",
+    "message": "切换代理设置您的工具栏。",
     "description": "Extension description."
   },
   "optHeader": {
@@ -60,7 +60,7 @@
     "description": "Option indicating that chrome should use the system proxy settings when proxxy is disabled."
   },
   "optOffValueAuto": {
-    "message": "强制使用WPAD代理",
+    "message": "强制使用的WPAD代理“",
     "description": "Option indicating that chrome should use a network wpad proxy when proxxy is disabled."
   },
   "optSaveButton": {
@@ -70,5 +70,17 @@
   "optClearButton": {
     "message": "清除代理服务器设置",
     "description": "Button for clearing proxy settings on the options page"
+  },
+  "optAboutHeader": {
+    "message": "笔记",
+    "description": "Header for the 'about' section of the options page, explaining how to help."
+  },
+  "optAboutText": {
+    "message": "想看Proxxy在您的语言吗？缺少的功能，或质量低劣的翻译吗？容易做出贡献！只要按照下面的链接，并将问题的Proxxy Google+专页。",
+    "description": "Text at the bottom of the options page explaining proxxy development."
+  },
+  "optAboutLink": {
+    "message": "取得联系！",
+    "description": "Link text for the Google+ Page."
   }
 }

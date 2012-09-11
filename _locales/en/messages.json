@@ -70,5 +70,18 @@
   "optClearButton": {
     "message": "Clear proxy settings",
     "description": "Button for clearing proxy settings on the options page"
+  },
+  "optAboutHeader": {
+	  "message": "Notes",
+	  "description": "Header for the 'about' section of the options page, explaining how to help."
+  },
+  "optAboutText": {
+	  "message": "Want to see Proxxy in your language?  Is the extension missing features?  It's easy to
+	  contribute! Just follow the link below, and post questions to the Proxxy Google+ Page.",
+	  "description": "Text at the bottom of the options page explaining proxxy development."
+  },
+  "optAboutLink": {
+  	  "message": "Get in touch!",
+	  "description": "Link text for the Google+ Page."
   }
 }

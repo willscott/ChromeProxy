@@ -1,0 +1,87 @@
+{
+   "browserActionOff": {
+      "description": "Icon overlay when not proxied.",
+      "message": "Off"
+   },
+   "browserActionOn": {
+      "description": "Icon overlay when proxied.",
+      "message": "On"
+   },
+   "browserActionTitle": {
+      "description": "Title text for the browser action icon.",
+      "message": "Proxxy!"
+   },
+   "extDesc": {
+      "description": "Extension description.",
+      "message": "Tek tıklama ile proxy değiştirin"
+   },
+   "extName": {
+      "description": "Extension name.",
+      "message": "Proxxy"
+   },
+   "optAboutHeader": {
+      "description": "Header for the 'about' section of the options page, explaining how to help.",
+      "message": "Hamiş:"
+   },
+   "optAboutLink": {
+      "description": "Link text for the Google+ Page.",
+      "message": "Burdan buyrun"
+   },
+   "optAboutText": {
+      "description": "Text at the bottom of the options page explaining proxxy development.",
+      "message": "Proxxy'yi başka bir dile çevirebilir ya da eklenmesini istediğiniz özellikleri \n
+       bize bildirebilirsiniz. Google+ sayfamıza bekleriz."
+   },
+   "optAddProxyButton": {
+      "description": "Add Proxy Button Text on the options page.",
+      "message": "Ekle"
+   },
+   "optClearButton": {
+      "description": "Button for clearing proxy settings on the options page",
+      "message": "Tüm proxyleri sil"
+   },
+   "optHeader": {
+      "description": "Options page Header.",
+      "message": "Proxxy Ayarları"
+   },
+   "optIncognitoLabel": {
+      "description": "Label for the checkbox to only proxy incognito windows on the options page",
+      "message": "Sadece incognito modunda iken kullan"
+   },
+   "optOffLabel": {
+      "description": "Label for the setting to choose behavior when proxy is turned off on the options page",
+      "message": "Proxy Off moda geçince ne yapalım?"
+   },
+   "optOffValueAuto": {
+      "description": "Option indicating that chrome should use a network wpad proxy when proxxy is disabled.",
+      "message": "WPAD ayarına geç"
+   },
+   "optOffValueClear": {
+      "description": "Option indicating chrome can choose what to do when proxxy is disabled.",
+      "message": "Chrome varsayılan ayarına dön"
+   },
+   "optOffValueDirect": {
+      "description": "Option indicating that chrome should attempt to connect directly when proxxy is disabled.",
+      "message": "Tüm proxy ayarlarını devre dışı bırak"
+   },
+   "optOffValueSystem": {
+      "description": "Option indicating that chrome should use the system proxy settings when proxxy is disabled.",
+      "message": "İşletim sisteminin proxy ayarına geç"
+   },
+   "optProxyListHeader": {
+      "description": "Header for the list of proxies on the options page.",
+      "message": "Proxy"
+   },
+   "optSaveButton": {
+      "description": "Button for saving proxy settings on the options page",
+      "message": "Kaydet"
+   },
+   "optSystemHeader": {
+      "description": "Header for system settings on the options page.",
+      "message": "Sistem"
+   },
+   "optTitle": {
+      "description": "Page title of the Options page.",
+      "message": "Proxxy"
+   }
+}

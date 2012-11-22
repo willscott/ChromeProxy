@@ -1,0 +1,86 @@
+{
+  "browserActionTitle": {
+    "message": "Proxxy-Schalter",
+    "description": "Title text for the browser action icon."
+  },
+  "browserActionOff": {
+    "message": "aus",
+    "description": "Icon overlay when not proxied."
+  },
+  "browserActionOn": {
+    "message": "an",
+    "description": "Icon overlay when proxied."
+  },
+  "extName": {
+    "message": "Proxxy",
+    "description": "Extension name."
+  },
+  "extDesc": {
+    "message": "Einfach die beste Proxy-Erweiterung für Chrome.",
+    "description": "Extension description."
+  },
+  "optHeader": {
+    "message": "Proxxy Einstellungen",
+    "description": "Options page Header."
+  },
+  "optTitle": {
+    "message": "Proxxy",
+    "description": "Page title of the Options page."
+  },
+  "optProxyListHeader": {
+    "message": "Proxy-Server",
+    "description": "Header for the list of proxies on the options page."
+  },
+  "optAddProxyButton": {
+    "message": "Hinzufügen",
+    "description": "Add Proxy Button Text on the options page."
+  },
+  "optSystemHeader": {
+    "message": "System",
+    "description": "Header for system settings on the options page."
+  },
+  "optIncognitoLabel": {
+    "message": "Proxxy nur auf Inkognito-Fenster anwenden",
+    "description": "Label for the checkbox to only proxy incognito windows on the options page"
+  },
+  "optOffLabel": {
+    "message": "Verhalten, wenn der Proxxy-Schalter auf <aus> steht:",
+    "description": "Label for the setting to choose behavior when proxy is turned off on the options page"
+  },
+  "optOffValueClear": {
+    "message": "Steuerung an Chrome zurückgeben",
+    "description": "Option indicating chrome can choose what to do when proxxy is disabled."
+  },
+  "optOffValueDirect": {
+    "message": "Direkte Verbindung erzwingen",
+    "description": "Option indicating that chrome should attempt to connect directly when proxxy is disabled."
+  },
+  "optOffValueSystem": {
+    "message": "System-Konfiguration erzwingen",
+    "description": "Option indicating that chrome should use the system proxy settings when proxxy is disabled."
+  },
+  "optOffValueAuto": {
+    "message": "WPAD-Proxy erzwingen",
+    "description": "Option indicating that chrome should use a network wpad proxy when proxxy is disabled."
+  },
+  "optSaveButton": {
+    "message": "Speichern",
+    "description": "Button for saving proxy settings on the options page"
+  },
+  "optClearButton": {
+    "message": "Proxy-Einstellungen löschen",
+    "description": "Button for clearing proxy settings on the options page"
+  },
+  "optAboutHeader": {
+	  "message": "Hinweise",
+	  "description": "Header for the 'about' section of the options page, explaining how to help."
+  },
+  "optAboutText": {
+	  "message": "Soll Proxxy in Ihrer Sprache angezeigt werden? Haben Sie Vorschläge für neue Funktionen? Folgen Sie einfach dem nachstehenden Link!",
+	  "description": "Text at the bottom of the options page explaining proxxy development."
+  },
+  "optAboutLink": {
+  	"message": "Kontakt zu Proxxy auf Google+",
+	  "description": "Link text for the Google+ Page."
+  }
+}

@@ -78,6 +78,7 @@ function setProxy() {
     chrome.browserAction.setBadgeText({
       text: chrome.i18n.getMessage("browserActionOn")
     });
+		chrome.browserAction.setBadgeBackgroundColor({color: [110, 210, 80, 180]});
     var proxysettings = {
       mode: 'fixed_servers',
       rules: {}
@@ -90,10 +91,11 @@ function setProxy() {
       'scope': getScope()
     }, function() {});
   } else {
+		chrome.browserAction.setBadgeBackgroundColor({color: [130, 130, 130, 180]});
     chrome.browserAction.setBadgeText({
       text: chrome.i18n.getMessage("browserActionOff")
     });
-    if (localStorage['off'] in ['system','auto_detect','direct']) {
+    if (localStorage['off'] in ['system', 'auto_detect', 'direct']) {
       var proxysettings = {mode: localStorage['off']};
       chrome.proxy.settings.set({
         'value': proxysettings,
@@ -122,8 +124,8 @@ function flipState() {
   setProxy();
 }
 
-chrome.browserAction.setIcon({path:"icon-19.png"});
-chrome.browserAction.setBadgeBackgroundColor({color:[110,140,180,180]});
+chrome.browserAction.setIcon({path: "icon-19.png"});
+chrome.browserAction.setBadgeBackgroundColor({color:[130, 130, 130, 180]});
 chrome.browserAction.onClicked.addListener(flipState);
 chrome.extension.onRequest.addListener(
   function(request, sender, sendResponse) {

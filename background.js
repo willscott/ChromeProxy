@@ -124,6 +124,10 @@ function flipState() {
   setProxy();
 }
 
+function proxyError(details) {
+	chrome.browserAction.setBadgeBackgroundColor({color: [210, 110, 80, 180]});
+}
+
 chrome.browserAction.setIcon({path: "icon-19.png"});
 chrome.browserAction.setBadgeBackgroundColor({color:[130, 130, 130, 180]});
 chrome.browserAction.onClicked.addListener(flipState);
@@ -139,4 +143,5 @@ chrome.extension.onRequest.addListener(
     }
     sendResponse();
   });
+chrome.proxy.onProxyError.addListener(proxyError);
 setProxy();

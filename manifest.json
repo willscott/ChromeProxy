@@ -3,7 +3,10 @@
   "name": "__MSG_extName__",
   "description": "__MSG_extDesc__",
   "version": "1.2.5",
-  "background": {"scripts": ["background.js"]},
+  "background": {
+		"scripts": ["background.js"],
+		"persistent": false
+	},
   "content_security_policy": "default-src 'self'; img-src 'self' data:",
   "default_locale": "en",
   "offline_enabled": true,  

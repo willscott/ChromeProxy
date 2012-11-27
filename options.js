@@ -1,6 +1,6 @@
 function save() {
   document.getElementById('save').setAttribute('disabled', 'true');
-  chrome.extension.sendRequest({'cmd':'start_save'}, real_save);
+  chrome.extension.sendMessage({'cmd':'start_save'}, real_save);
 }
 
 function real_save() {
@@ -10,7 +10,7 @@ function real_save() {
     'checked' : 0;
   localStorage['off'] = document.getElementById('off').value;
 
-  chrome.extension.sendRequest({
+  chrome.extension.sendMessage({
     'cmd':'end_save'
   }, function(response) {
     document.getElementById('save').removeAttribute('disabled');
@@ -19,7 +19,7 @@ function real_save() {
 
 function clear() {
   document.getElementById('clear').setAttribute('disabled', 'true');
-  chrome.extension.sendRequest({'cmd':'clear'}, real_clear);
+  chrome.extension.sendMessage({'cmd':'clear'}, real_clear);
 }
 
 function real_clear() {

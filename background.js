@@ -1,5 +1,6 @@
-var state = localStorage['state'] || 0;
-var saved_state = 0;
+function getState() {
+	return localStorage['state'] || "false";
+}
 
 function getScope() {
   return (localStorage['incognito'] == 'checked') ?
@@ -73,7 +74,7 @@ function setProxy() {
     setup();
   }
 
-  state = localStorage['state'] || "false";
+  var state = getState();
   if (state != "false") {
     chrome.browserAction.setBadgeText({
       text: chrome.i18n.getMessage("browserActionOn")
@@ -113,8 +114,8 @@ function clearProxy() {
   chrome.proxy.settings.clear({'scope': 'incognito_session_only'});
 }
 
-function flipState() {
-  state = localStorage['state'] || "false";
+function clickListener() {
+  var state = getState();
   if (state == "false") {
     state = "true";
   } else {
@@ -124,24 +125,47 @@ function flipState() {
   setProxy();
 }
 
-function proxyError(details) {
-	chrome.browserAction.setBadgeBackgroundColor({color: [210, 110, 80, 180]});
+function requestListener(request, sender, sendResponse) {
+	if (request['cmd'] == 'start_save') {
+		var state = getState();
+		localStorage['savedState'] = state
+  	if(state == "true") {
+			clickListener()
+		} else {
+			setProxy();
+		}
+	} else if (request['cmd'] == 'clear') {
+		clearProxy();
+	} else { //end save
+		if (localStorage['savedState'] == "true") {
+			clickListener();
+		} else {
+			setProxy();
+		}
+	}
+	sendResponse();
+};
+
+function errorListener(details) {
+	if (getState() == "true") {
+  	chrome.browserAction.setBadgeBackgroundColor({color: [210, 110, 80, 180]});
+	}
 }
 
-chrome.browserAction.setIcon({path: "icon-19.png"});
-chrome.browserAction.setBadgeBackgroundColor({color:[130, 130, 130, 180]});
-chrome.browserAction.onClicked.addListener(flipState);
-chrome.extension.onRequest.addListener(
-  function(request, sender, sendResponse) {
-    if (request['cmd'] == 'start_save') {
-      saved_state = state;
-      state ? flipState() : setProxy();
-    } else if (request['cmd'] == 'clear') {
-      clearProxy();
-    } else { //end save
-      saved_state ? flipState() : setProxy();
-    }
-    sendResponse();
-  });
-chrome.proxy.onProxyError.addListener(proxyError);
-setProxy();
+function startupListener() {
+	// Initial View.
+	chrome.browserAction.setIcon({path: "icon-19.png"});
+	chrome.browserAction.setBadgeBackgroundColor({color:[130, 130, 130, 180]});
+
+  // Restore state.
+	setProxy();	
+}
+
+/**
+ * Initialization.
+ */
+chrome.browserAction.onClicked.addListener(clickListener);
+chrome.extension.onMessage.addListener(requestListener);
+chrome.proxy.onProxyError.addListener(errorListener);
+chrome.runtime.onStartup.addListener(startupListener);
+chrome.runtime.onInstalled.addListener(startupListener);

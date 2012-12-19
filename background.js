@@ -257,6 +257,27 @@ function saveUsage(events) {
 	document.head.appendChild(ga);
 }
 
+function installListener()
+{
+	startupListener();
+	if (localStorage['state'] == undefined) {
+		// First Install.
+  	chrome.browserAction.setBadgeBackgroundColor({color: [210, 110, 80, 180]});
+    chrome.browserAction.setBadgeText({
+      text: "!"
+    });
+		chrome.browserAction.onClicked.removeListener(clickListener);
+		chrome.browserAction.onClicked.addListener(firstClickListener);
+	}
+}
+
+function firstClickListener() {
+	window.open("options.html");
+	chrome.browserAction.onClicked.removeListener(firstClickListener);
+	chrome.browserAction.onClicked.addListener(clickListener);
+	setProxy();	
+}
+
 function startupListener() {
 	// Initial View.
 	chrome.browserAction.setIcon({path: "icon-19.png"});
@@ -274,4 +295,4 @@ chrome.extension.onMessage.addListener(requestListener);
 chrome.proxy.onProxyError.addListener(errorListener);
 chrome.proxy.settings.onChange.addListener(changeListener);
 chrome.runtime.onStartup.addListener(startupListener);
-chrome.runtime.onInstalled.addListener(startupListener);
+chrome.runtime.onInstalled.addListener(installListener);

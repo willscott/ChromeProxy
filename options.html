@@ -34,6 +34,19 @@
       <button id='save' i18n-content="optSaveButton">Save</button>
       <button id='clear' i18n-content="optClearButton">Clear proxy settings</button>
     </section>
+    <section id="usage">
+      <h3 i18n-content="optUsageHeader">Usage</h3>
+      <div id="usageContainer">
+        <div id="localUsage" i18n-content="optUsageLocal">Local</div>
+        <div id="remoteUsage" i18n-content="optUsageRemote">Remote</div>
+        <div id="unknownUsage" i18n-content="optUsageUnknown">Unknown</div>
+        <div id="unproxiedUsage" i18n-content="optUsageOff">Direct</div>
+      </div>
+      <input type='checkbox' id='usageoptout' />
+      <label for='usageoptout' i18n-content="optUsageOptOut">
+        Don't keep track of this.
+      </label>
+    </section>
     <section id="about">
       <h3 i18n-content="optAboutHeader">Notes</h3>
       <p i18n-content="optAboutText">

@@ -136,6 +136,17 @@ function requestListener(request, sender, sendResponse) {
 		}
 	} else if (request['cmd'] == 'clear') {
 		clearProxy();
+	} else if (request['cmd'] == 'get_statistics') {
+		updateStatistics('stats');
+		var stats = JSON.parse(localStorage['stats']);
+		sendResponse(stats);
+		return;
+	} else if (request['cmd'] == 'set_statistics') {
+		localStorage['collectStats'] = request['value'];
+		updateStatistics('stats');
+		var stats = JSON.parse(localStorage['stats']);
+		sendResponse(stats);
+		return;
 	} else { //end save
 		if (localStorage['savedState'] == "true") {
 			clickListener();
@@ -150,13 +161,107 @@ function errorListener(details) {
 	if (getState() == "true") {
   	chrome.browserAction.setBadgeBackgroundColor({color: [210, 110, 80, 180]});
 	}
+	updateStatistics("error");
+}
+
+function changeListener(details) {
+	if (details.value.mode == "fixed_servers" || details.value.mode == "pac_script" ) {
+		if (details.value.mode == "fixed_servers") {
+			for (var rule in details.value.rules) {
+				if (details.value.rules[rule].host && (
+						details.value.rules[rule].host.toLowerCase() == "localhost" ||
+						details.value.rules[rule].host == "127.0.0.1")) {
+					updateStatistics("local");
+					return;
+				}
+			}
+		}
+		updateStatistics("remote");
+	} else {
+		updateStatistics("off");
+	}
+}
+
+function updateStatistics(why) {
+	var stats;
+	try {
+		stats = JSON.parse(localStorage['stats']);
+	} catch(e) {
+		stats = {
+			last: new Date().valueOf(),
+			lastCheck: new Date().valueOf(),
+			lastState: false, 
+			countedTime: 0,
+			localUsage: 0,
+			remoteUsage: 0,
+			errors: 0,
+			flips: 0
+		};
+	}
+	if (localStorage['collectStats'] == "false") {
+		stats = {countedTime: 0, optout: true};
+		localStorage['stats'] = JSON.stringify(stats);
+		return;
+	} else if (stats.optout) {
+		stats = {
+			last: new Date().valueOf(),
+			lastCheck: new Date().valueOf(),
+			lastState: false, 
+			countedTime: 0,
+			localUsage: 0,
+			remoteUsage: 0,
+			errors: 0,
+			flips: 0
+		};
+	}
+	var now = new Date();
+	if (stats.lastState == 'local') {
+		stats.localUsage += (now - stats.last);
+	} else if (stats.lastState == 'remote') {
+		stats.remoteUsage += (now - stats.last);
+	}
+	stats.countedTime += (now - stats.last);
+	stats.last = now.valueOf();
+	if (why == 'local' || why == 'remote' || why == 'off')
+	{
+		stats.lastState = why;
+		stats.flips += 1;
+	} else if (why == 'error') {
+		stats.errors += 1;
+	}
+	var lc = stats.lastCheck || new Date().valueOf();
+	stats.lastCheck = lc;
+	if (!stats.lastState && !(why == 'error') && (lc + 1000 * 60 * 60 * 24) < new Date().valueOf()) {
+		stats.lastCheck = new Date().valueOf();
+		saveUsage({
+			'usage': ['local', stats.localUsage],
+			'usage': ['remote', stats.remoteUsage],
+			'usage': ['total', stats.countedTime],
+			'events': stats.flips,
+			'errors': stats.errors
+		});
+	}
+	localStorage['stats'] = JSON.stringify(stats);
+}
+
+function saveUsage(events) {
+	var g = document.createElement('script');
+	g.type = 'text/javascript'; g.async = true;
+	g.src = 'https://ssl.google-analytics.com/ga.js';
+	g.addEventListener('load', function() {
+		_gaq.push(['_setAccount', 'UA-471290-9']);
+		for (var i in events) {
+			_gaq.push(['_trackEvent', 'extension', i].concat(events[i]));
+		}
+	}, true);
+	document.head.appendChild(ga);
 }
 
 function startupListener() {
 	// Initial View.
 	chrome.browserAction.setIcon({path: "icon-19.png"});
 	chrome.browserAction.setBadgeBackgroundColor({color:[130, 130, 130, 180]});
-
+	
   // Restore state.
 	setProxy();	
 }
@@ -167,5 +272,6 @@ function startupListener() {
 chrome.browserAction.onClicked.addListener(clickListener);
 chrome.extension.onMessage.addListener(requestListener);
 chrome.proxy.onProxyError.addListener(errorListener);
+chrome.proxy.settings.onChange.addListener(changeListener);
 chrome.runtime.onStartup.addListener(startupListener);
 chrome.runtime.onInstalled.addListener(startupListener);

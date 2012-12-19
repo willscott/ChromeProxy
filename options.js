@@ -17,6 +17,34 @@ function real_save() {
   });
 }
 
+function loadUsage() {
+	chrome.extension.sendMessage({'cmd':'get_statistics'}, function(usage) {
+		console.log(usage);
+		if (usage.countedTime != 0) {
+			document.getElementById("unknownUsage").style.width = "0%";
+			document.getElementById("localUsage").style.width = ((100.0 * usage.localUsage) / usage.countedTime) + "%";
+			document.getElementById("remoteUsage").style.width = ((100.0 * usage.remoteUsage) / usage.countedTime) + "%";
+		}
+		if (usage.optout) {
+			document.getElementById('usageoptout').checked = true;
+		}
+	});
+}
+
+function updateUsage() {
+	chrome.extension.sendMessage({'cmd':'set_statistics','value':!document.getElementById('usageoptout').checked}, function(usage) {
+		if (usage.countedTime != 0) {
+			document.getElementById("unknownUsage").style.width = "0%";
+			document.getElementById("localUsage").style.width = ((100.0 * usage.localUsage) / usage.countedTime) + "%";
+			document.getElementById("remoteUsage").style.width = ((100.0 * usage.remoteUsage) / usage.countedTime) + "%";
+		} else {
+			document.getElementById("unknownUsage").style.width = "100%";
+			document.getElementById("localUsage").style.width = "0%";
+			document.getElementById("remoteUsage").style.width = "0%";
+		}
+	});
+}
+
 function clear() {
   document.getElementById('clear').setAttribute('disabled', 'true');
   chrome.extension.sendMessage({'cmd':'clear'}, real_clear);
@@ -69,6 +97,7 @@ window.onload = function() {
   } else if(!localStorage['proxy']) {
     setup();
   }
+	loadUsage();
   
   var i18nOptions = {
     "optOffValues": [
@@ -114,4 +143,5 @@ window.onload = function() {
 
   document.getElementById('save').addEventListener('click', save, false);
   document.getElementById('clear').addEventListener('click', clear, false);
+	document.getElementById('usageoptout').addEventListener('change', updateUsage, false);
 };

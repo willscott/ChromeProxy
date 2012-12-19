@@ -278,3 +278,56 @@
     /* TODO(stuartmorgan): Replace with validity badge */
     background-color: pink;
   }
+	
+	#usageContainer {
+		width: 100%;
+		border: 1px solid #eee;
+		position: relative;
+		z-index: 2;
+		height: 30px;
+		overflow:hidden;
+		background-image: -webkit-linear-gradient(left bottom, #ddd 0%, #ddd 25%, #9be 25%, #9be 50%, #ddd 50%, #ddd 75%, #9be 75%);
+		background-image: linear-gradient(left bottom, #ddd 0%, #ddd 25%, #9be 25%, #9be 50%, #ddd 50%, #ddd 75%, #9be 75%);
+		background-size: 30px 30px;
+	}
+	#usageContainer > div {
+		padding: 0;
+		margin: 0;
+		height: 30px;
+		font-size: 1.2em;
+		line-height: 2em;
+		text-indent: 5px;
+		text-shadow: 0px 3px 3px #eee,
+								 3px 0px 3px #eee,
+								 -3px 0px 3px #eee,
+								 0px -3px 3px #eee;
+	}
+	#localUsage, #remoteUsage, #unknownUsage {
+		z-index: 2;
+		float:left;
+		width:0%;
+		overflow: hidden;
+		background-size: 30px 30px;
+	}
+	#localUsage {
+		background-image: -webkit-linear-gradient(left bottom, #ddd 0%, #ddd 25%, #daf 25%, #daf 50%, #ddd 50%, #ddd 75%, #daf 75%);
+		background-image: linear-gradient(left bottom, #ddd 0%, #ddd 25%, #daf 25%, #daf 50%, #ddd 50%, #ddd 75%, #daf 75%);
+	}
+	#remoteUsage {
+		background-image: -webkit-linear-gradient(left bottom, #ddd 0%, #ddd 25%, #9eb 25%, #9eb 50%, #ddd 50%, #ddd 75%, #9eb 75%);
+		background-image: linear-gradient(left bottom, #ddd 0%, #ddd 25%, #9eb 25%, #9eb 50%, #ddd 50%, #ddd 75%, #9eb 75%);
+	}
+	#unknownUsage {
+		width: 100%;
+		background-image: -webkit-linear-gradient(left bottom, #ddd 0%, #ddd 25%, #bbb 25%, #bbb 50%, #ddd 50%, #ddd 75%, #bbb 75%);
+		background-image: linear-gradient(left bottom, #ddd 0%, #ddd 25%, #bbb 25%, #bbb 50%, #ddd 50%, #ddd 75%, #bbb 75%);
+	}
+	div#unproxiedUsage {
+		width: 100%;
+		top: 0;
+		left: 0;
+		text-align: right;
+	}
+	#usage label {
+		color: #888;
+	}

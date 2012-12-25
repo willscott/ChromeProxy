@@ -85,27 +85,27 @@
       "message": "Proxxy"
    },
 	"optUsageHeader": {
-		"message": "Usage",
+		"message": "Kullanım oranı",
 		"description": "Header for display of your aggregate proxy usage."
 	},
 	"optUsageLocal": {
-		"message": "Local",
+		"message": "Lokal",
 		"description": "Usage title for time spent with an active local proxy."
 	},
 	"optUsageRemote": {
-		"message": "Remote",
+		"message": "Uzak",
 		"description": "Usage title for time spent with an active remote proxy."
 	},
 	"optUsageUnknown": {
-		"message": "Unknown",
+		"message": "Belirsiz",
 		"description": "Usage title for time spent with proxy in unknown state."
 	},
 	"optUsageOff": {
-		"message": "Direct",
+		"message": "Direkt",
 		"description": "Usage title for time spent without an active proxy."
 	},
 	"optUsageOptOut": {
-		"message": "Don't keep track of this.",
+		"message": "Kayıt tutulmasın.",
 		"description": "Label for checkbox to turn off aggregation of proxy usage."
 	}
 }

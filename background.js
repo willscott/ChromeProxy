@@ -254,7 +254,7 @@ function saveUsage(events) {
 			_gaq.push(['_trackEvent', 'extension', i].concat(events[i]));
 		}
 	}, true);
-	document.head.appendChild(ga);
+	document.head.appendChild(g);
 }
 
 function installListener()

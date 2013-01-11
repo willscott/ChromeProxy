@@ -19,7 +19,6 @@ function real_save() {
 
 function loadUsage() {
 	chrome.extension.sendMessage({'cmd':'get_statistics'}, function(usage) {
-		console.log(usage);
 		if (usage.countedTime != 0) {
 			document.getElementById("unknownUsage").style.width = "0%";
 			document.getElementById("localUsage").style.width = ((100.0 * usage.localUsage) / usage.countedTime) + "%";

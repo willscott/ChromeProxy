@@ -22,7 +22,7 @@
     -webkit-padding-start: 18px;
     padding-top: 45px;
     padding-left: 0px;
-    width: 738px;
+    min-width: 738px;
   }
   div.checkbox {
     margin: .65em 0;
@@ -33,7 +33,7 @@
     color: #303942;
     margin-top:0;
     margin-left:0px;
-    max-width: 738px;
+    max-width: 1024px;
     min-width: 600px;
     left: 155px;
     background: -webkit-linear-gradient(top, white, white 40%,

@@ -16,19 +16,19 @@
     "description": "Extension name."
   },
   "extDesc": {
-    "message": "切换代理设置您的工具栏。",
+    "message": "快速切换chrome代理",
     "description": "Extension description."
   },
   "optHeader": {
-    "message": "Proxxy设定",
+    "message": "设置",
     "description": "Options page Header."
   },
   "optTitle": {
-    "message": "Proxxy 代理",
+    "message": "proxxy 代理",
     "description": "Page title of the Options page."
   },
   "optProxyListHeader": {
-    "message": "代理选项",
+    "message": "代理服务器地址",
     "description": "Header for the list of proxies on the options page."
   },
   "optAddProxyButton": {
@@ -40,27 +40,27 @@
     "description": "Header for system settings on the options page."
   },
   "optIncognitoLabel": {
-    "message": "仅代理隐姓埋名窗口",
+    "message": "仅代理隐身窗口",
     "description": "Label for the checkbox to only proxy incognito windows on the options page"
   },
   "optOffLabel": {
-    "message": "注销代理行为时，",
+    "message": "停用代理时",
     "description": "Label for the setting to choose behavior when proxy is turned off on the options page"
   },
   "optOffValueClear": {
-    "message": "返回控制",
+    "message": "使用chrome代理设置",
     "description": "Option indicating chrome can choose what to do when proxxy is disabled."
   },
   "optOffValueDirect": {
-    "message": "强制直接连接",
+    "message": "使用直接连接",
     "description": "Option indicating that chrome should attempt to connect directly when proxxy is disabled."
   },
   "optOffValueSystem": {
-    "message": "配置力系",
+    "message": "使用系统设置",
     "description": "Option indicating that chrome should use the system proxy settings when proxxy is disabled."
   },
   "optOffValueAuto": {
-    "message": "强制使用的WPAD代理“",
+    "message": "自动发现代理服务器（wpad）“",
     "description": "Option indicating that chrome should use a network wpad proxy when proxxy is disabled."
   },
   "optSaveButton": {
@@ -68,35 +68,35 @@
     "description": "Button for saving proxy settings on the options page"
   },
   "optClearButton": {
-    "message": "清除代理服务器设置",
+    "message": "恢复默认",
     "description": "Button for clearing proxy settings on the options page"
   },
   "optAboutHeader": {
-    "message": "笔记",
+    "message": "提示",
     "description": "Header for the 'about' section of the options page, explaining how to help."
   },
   "optAboutText": {
-    "message": "想看Proxxy在您的语言吗？缺少的功能，或质量低劣的翻译吗？容易做出贡献！只要按照下面的链接，并将问题的Proxxy Google+专页。",
+    "message": "想让Proxxy支持的语言或翻译不准确，想增加的功能，都可于Proxxy Google+主页反馈。很轻松的事！",
     "description": "Text at the bottom of the options page explaining proxxy development."
   },
   "optAboutLink": {
-    "message": "取得联系！",
+    "message": "进入Proxxy Google+主页",
     "description": "Link text for the Google+ Page."
   },
 	"optUsageHeader": {
-		"message": "活动报告",
+		"message": "使用情况",
 		"description": "Header for display of your aggregate proxy usage."
 	},
 	"optUsageLocal": {
-		"message": "本地",
+		"message": "本地连接",
 		"description": "Usage title for time spent with an active local proxy."
 	},
 	"optUsageRemote": {
-		"message": "网地",
+		"message": "远程连接",
 		"description": "Usage title for time spent with an active remote proxy."
 	},
 	"optUsageUnknown": {
-		"message": "未知",
+		"message": "未知情况",
 		"description": "Usage title for time spent with proxy in unknown state."
 	},
 	"optUsageOff": {
@@ -104,7 +104,7 @@
 		"description": "Usage title for time spent without an active proxy."
 	},
 	"optUsageOptOut": {
-		"message": "不要记录.",
+		"message": "不要记录",
 		"description": "Label for checkbox to turn off aggregation of proxy usage."
 	}
 }

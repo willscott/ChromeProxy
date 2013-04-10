@@ -1,6 +1,6 @@
 {
   "browserActionTitle": {
-    "message": "Proxxy!",
+    "message": "Proxxy",
     "description": "Title text for the browser action icon."
   },
   "browserActionOff": {
@@ -24,7 +24,7 @@
     "description": "Options page Header."
   },
   "optTitle": {
-    "message": "proxxy 代理",
+    "message": "Proxxy切换代理",
     "description": "Page title of the Options page."
   },
   "optProxyListHeader": {
@@ -44,7 +44,7 @@
     "description": "Label for the checkbox to only proxy incognito windows on the options page"
   },
   "optOffLabel": {
-    "message": "停用代理时",
+    "message": "停用代理时：",
     "description": "Label for the setting to choose behavior when proxy is turned off on the options page"
   },
   "optOffValueClear": {
@@ -60,7 +60,7 @@
     "description": "Option indicating that chrome should use the system proxy settings when proxxy is disabled."
   },
   "optOffValueAuto": {
-    "message": "自动发现代理服务器（wpad）“",
+    "message": "自动发现代理服务器（wpad）",
     "description": "Option indicating that chrome should use a network wpad proxy when proxxy is disabled."
   },
   "optSaveButton": {

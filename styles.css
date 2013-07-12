@@ -34,14 +34,13 @@
     margin-top:0;
     margin-left:0px;
     max-width: 1024px;
-    min-width: 600px;
+    min-width: 630px;
     left: 155px;
     background: -webkit-linear-gradient(top, white, white 40%,
       rgba(255, 255, 255, 0.92));
     z-index: 3;
   }
   header h1::after {
-    -webkit-margin-end: 20px;
     background-color: #eee;
     content: ' ';
     display: block;
@@ -331,3 +330,18 @@
 	#usage label {
 		color: #888;
 	}
+  
+  textarea {
+    border: 1px solid #d9d9d9;
+    border-radius: 2px;
+    min-height: 100px;
+    max-height: 350px;
+    overflow-y: scroll;
+    width: 610px;
+    padding: 10px;
+    resize: none;
+  }
+  
+  #domainrules label {
+    width: 100%;
+  }

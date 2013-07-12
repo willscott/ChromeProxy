@@ -19,6 +19,16 @@
     <div class="spacer"></div>
     </list>
     <button id='addButton' i18n-content="optAddProxyButton">Add</button>
+    <button id='domButton' i18n-content="optDomProxyButton">Edit Domain Rules</button>
+    </section>
+    <section id="domainrules">
+      <h3 i18n-content="optDomainHeader">Domain Inclusion / Exclusion</h3>
+      <select id='domMode' i18n-options="optDomModeValues"></select>
+      <div class='nl'></div>
+      <textarea id='domainexceptions'></textarea>
+      <label for='domainexceptions' i18n-content="optDomExcept">
+        One entry per line. Patterns such as '*.com' are allowed.
+      </label>
     </section>
     <section id="other">
       <h3 i18n-content="optSystemHeader">System</h3>

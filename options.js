@@ -104,6 +104,10 @@ window.onload = function() {
       ["direct", "optOffValueDirect"],
       ["system", "optOffValueSystem"],
       ["auto_detect", "optOffValueAuto"]
+    ],
+    "optDomModeValues": [
+      ["include", "optDomModeValueInclude"],
+      ["exclude", "optDomModeValueExclude"]
     ]
   };
   
@@ -133,6 +137,17 @@ window.onload = function() {
       window.proxyList.add();
     }
   }, false);
+  
+  document.getElementById('domButton').addEventListener('click', function(e) {
+    var mode = localStorage['domMode'] || 'none';
+    if (mode == 'none') {
+      mode = 'block';
+    } else {
+      mode = 'none';
+    }
+    localStorage['domMode'] = mode;
+    document.getElementById('domainrules').style.display = mode;
+  }, false);
 
   document.getElementById('incognito').checked =
      (localStorage['incognito'] == 'checked');
@@ -140,6 +155,7 @@ window.onload = function() {
   document.getElementById('logo').src =
       chrome.extension.getURL('icon-128.png');
 
+  document.getElementById('domainrules').style.display = localStorage['domMode'] || 'none';
   document.getElementById('save').addEventListener('click', save, false);
   document.getElementById('clear').addEventListener('click', clear, false);
 	document.getElementById('usageoptout').addEventListener('change', updateUsage, false);

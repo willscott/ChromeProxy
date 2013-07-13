@@ -18,6 +18,8 @@ proxyList.prototype.init = function() {
   }, false);
 };
 
+proxyList.prototype.onSelect = function(selectedItem) {};
+
 proxyList.prototype.addComplex = function() {
   this.addByName("http://localhost:8080,http://localhost:8080,http://localhost:8080,http://localhost:8080");
 };
@@ -33,6 +35,7 @@ proxyList.prototype.addByName = function(string) {
   p.onRemove = function() {
     var idx = this.proxies.indexOf(p);
     this.proxies.splice(idx, 1);
+    this.onSelect("");
   }.bind(this);
   p.onSelect = function() {
     for (var idx = 0; idx < this.proxies.length; idx++) {
@@ -40,6 +43,7 @@ proxyList.prototype.addByName = function(string) {
         this.proxies[idx].deselect();
       }
     }
+    this.onSelect(p.toString());
   }.bind(this);
 };
 
@@ -47,9 +51,19 @@ proxyList.prototype.select = function(string) {
   for (var i = 0; i < this.proxies.length; i++) {
     if (this.proxies[i].toString() == string) {
       this.proxies[i].element.setAttribute('selected', true);
+      this.onSelect(this.proxies[i].toString());
       break;
     }
   }
+};
+
+proxyList.prototype.getValue = function() {
+  for (var i = 0; i < this.proxies.length; i++) {
+    if (this.proxies[i].element.getAttribute('selected')) {
+      return this.proxies[i];
+    }
+  }
+  return null;
 };
 
 proxyList.prototype.save = function() {

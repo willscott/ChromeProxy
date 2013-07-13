@@ -125,26 +125,40 @@ proxy.prototype.blur = function() {
   }
 };
 
+proxy.prototype.update = function(value) {
+  var other = proxy.fromString(value);
+  this.scheme = other.scheme;
+  this.host = other.host;
+  this.port = other.port;
+  this.domains = other.domains;
+}
+
 proxy.prototype.deselect = function() {
     this.element.removeAttribute('selected');
     this.element.removeAttribute('editing');
 };
 
 proxy.prototype.toString = function() {
-  if (this.multiple) {
-    
-  } else {
-    return this.scheme + "://" + this.host + ":" + this.port;
+  var dom = "";
+  if (this.domains.length) {
+    dom = ";" + this.domains;
   }
+  return this.scheme + "://" + this.host + ":" + this.port + dom;
 };
 
 proxy.prototype.toHTML = function() {
   var text = document.createElement('span');
-  text.innerText = this.toString();
+  text.innerText = this.scheme + "://" + this.host + ":" + this.port;
   return text;
 };
 
 proxy.fromString = function(string) {
+  var domains = "";
+  if (string.indexOf(";") > -1) {
+    var idx = string.indexOf(";");
+    domains = string.substr(idx + 1);
+    string = string.substr(0, idx);
+  }
   if (string.indexOf(",") > -1) {
     var items = string.split(",");
     if (items.length != 4) {
@@ -155,13 +169,16 @@ proxy.fromString = function(string) {
     for (var i = 0; i < 4; i++) {
       proxies.push(proxy.fromString(items[i]));
     }
-    return new metaproxy(proxies);
+    var m = new metaproxy(proxies);
+    m.domains = domains;
+    return m;
   }
   var parts = /(.*):\/\/(.*):(.*)/g.exec(string);
   var p = new proxy();
   p.scheme = parts[1];
   p.host = parts[2];
   p.port = parts[3];
+  p.domains = domains;
   return p;
 };
 
@@ -230,7 +247,11 @@ metaproxy.prototype.toString = function() {
   for (var i = 0; i < this.proxies.length; i++) {
     string += this.proxies[i].toString() + ",";
   }
-  return string.substr(0, string.length - 1);
+  var s = string.substr(0, string.length - 1);
+  if (this.domains.length) {
+    s += ";" + this.domains;
+  }
+  return s;
 };
 
 metaproxy.prototype.toHTML = function() {

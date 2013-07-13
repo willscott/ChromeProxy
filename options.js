@@ -137,17 +137,26 @@ window.onload = function() {
       window.proxyList.add();
     }
   }, false);
+
+  window.domainSettings = domainSettings.getInstance(document.getElementById('domainrules'));
+  window.domainSettings.toggle(document.getElementById('domButton'));
   
-  document.getElementById('domButton').addEventListener('click', function(e) {
-    var mode = localStorage['domMode'] || 'none';
-    if (mode == 'none') {
-      mode = 'block';
-    } else {
-      mode = 'none';
+  window.proxyList.onSelect = function(p) {
+    window.proxyList.save();
+    window.domainSettings.refresh(p);
+  }
+  
+  window.domainSettings.onChange = function(p) {
+    var proxy = window.proxyList.getValue();
+    if (p && proxy) {
+      proxy.update(p);
+      window.proxyList.save();
     }
-    localStorage['domMode'] = mode;
-    document.getElementById('domainrules').style.display = mode;
-  }, false);
+  }
+
+  var initial = window.proxyList.getValue();
+  var val = initial ? initial.toString() : '';
+  window.domainSettings.refresh(val);
 
   document.getElementById('incognito').checked =
      (localStorage['incognito'] == 'checked');

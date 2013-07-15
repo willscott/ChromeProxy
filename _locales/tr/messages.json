@@ -36,6 +36,26 @@
       "description": "Add Proxy Button Text on the options page.",
       "message": "Ekle"
    },
+   "optDomProxyButton": {
+     "message": "Edit Domain Rules",
+     "description": "Button for editing which domains a proxy will be used for."
+   },
+   "optDomainHeader": {
+     "message": "Domain Inclusion / Exclusion",
+     "description": "Header for domain settings on the options page."
+   },
+   "optDomModeValueInclude": {
+     "message": "Only proxy these domain patterns",
+     "description": "Option indicating the proxy should only be used for a specified set of patterns."
+   },
+   "optDomModeValueExclude": {
+     "message": "Exclude these domain patterns",
+     "description": "Option indicating the proxy should be used except for a specified set of patterns."
+   },
+   "optDomExcept": {
+     "message": "One entry per line. Patterns such as '*.com' are allowed.",
+     "description": "Help text explaining domain exclusion rules."
+   },
    "optClearButton": {
       "description": "Button for clearing proxy settings on the options page",
       "message": "Tüm proxyleri sil"

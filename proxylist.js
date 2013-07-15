@@ -59,7 +59,7 @@ proxyList.prototype.select = function(string) {
 
 proxyList.prototype.getValue = function() {
   for (var i = 0; i < this.proxies.length; i++) {
-    if (this.proxies[i].element.getAttribute('selected')) {
+    if (this.proxies[i].element.attributes.getNamedItem('selected')) {
       return this.proxies[i];
     }
   }
@@ -67,11 +67,15 @@ proxyList.prototype.getValue = function() {
 };
 
 proxyList.prototype.save = function() {
+  window.setTimeout(this.save_.bind(this), 0);
+}
+
+proxyList.prototype.save_ = function() {
   var p = "";
   var ps = [];
   for (var i = 0; i < this.proxies.length; i++) {
     ps.push(this.proxies[i].toString());
-    if (this.proxies[i].element.getAttribute('selected')) {
+    if (this.proxies[i].element.attributes.getNamedItem('selected')) {
       p = this.proxies[i].toString();
     }
   }

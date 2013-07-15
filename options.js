@@ -60,29 +60,6 @@ function cleanscheme(s) {
   return s;
 };
 
-function migrate() {
-  var toStr = function(box) {
-    var scheme = localStorage[box + '-scheme'] || 'http';
-    var host = localStorage[box + '-host'] || '127.0.0.1';
-    var port = localStorage[box + '-port'] || '8080';
-    return cleanscheme(scheme) + "://" + host + ":" + port;
-  };
-  if (localStorage['mode'] == 'custom') {
-    var hp = toStr('hp');
-    var hsp = toStr('hsp');
-    var ftp = toStr('ftp');
-    var fbp = toStr('fbp');
-    var proxy = hp + ',' + hsp + ',' + ftp + ',' + fbp;
-    localStorage['proxy'] = proxy;
-    localStorage['proxies'] = JSON.stringify([proxy]);
-  } else {
-    var proxy = toStr('sp');
-    localStorage['proxy'] = proxy;
-    localStorage['proxies'] = JSON.stringify([proxy]);
-  }
-  delete localStorage['mode'];
-};
-
 function setup() {
   var proxy = "http://localhost:8080";
   localStorage['proxy'] = proxy;
@@ -90,10 +67,7 @@ function setup() {
 };
 
 window.onload = function() {
-  if (!localStorage['proxy'] && localStorage['mode'] == 'custom' ||
-      localStorage['mode'] == 'single') {
-    migrate();
-  } else if(!localStorage['proxy']) {
+  if(!localStorage['proxy']) {
     setup();
   }
 	loadUsage();

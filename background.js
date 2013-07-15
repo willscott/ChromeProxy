@@ -18,6 +18,12 @@ function splitProxy(string) {
 
 function loadProxy(rules) {
   var proxy = localStorage['proxy'] || 'http://localhost:8080';
+  var domain = "";
+  if (proxy.indexOf(";") > -1) {
+    var domIdx = proxy.indexOf(";");
+    domain = proxy.substr(domIdx + 1);
+    proxy = proxy.substr(0, domIdx);
+  }
   if (proxy.indexOf(",") > -1) {
     var items = proxy.split(",");
     var keys = ['proxyForHttp', 'proxyForHttps', 'proxyForFtp', 'fallbackProxy'];
@@ -26,6 +32,31 @@ function loadProxy(rules) {
     }
   } else {
     rules['singleProxy'] = splitProxy(proxy);
+  }
+  
+  if (domain && domain[0] == "+") {
+    var pxy = "DIRECT";
+    if (rules['singleProxy']['scheme'] == "socks4" || rules['singleProxy']['scheme'] == "socks5") {
+      pxy = "SOCKS " + rules['singleProxy']['host'] + ":" + rules['singleProxy']['port'];
+    } else if (rules['singleProxy']['scheme']) {
+      pxy = "PROXY " + rules['singleProxy']['host'] + ":" + rules['singleProxy']['port'];
+    }
+    var domains = JSON.stringify(domain.substr(1));
+    rules['PacScript'] = {
+      'data':
+"var domains = " + domains + ";\n" +
+"function FindProxyForURL(url, host) {\n" +
+"  var rules = domains.split('\\n');\n" +
+"  for (var i = 0; i < rules.length; i++) {\n" +
+"    if (shExpMatch(host, rules[i])) {\n" +
+"      return '" + pxy + "';\n" +
+"    }\n" +
+"  }\n" +
+"  return 'DIRECT';\n" +
+"}\n"
+    };
+  } else if (domain && domain[0] == "-"){
+    rules['bypassList'] = domain.substr(1).split("\n");
   }
 };
 
@@ -36,29 +67,6 @@ function cleanscheme(s) {
   return s;
 };
 
-function migrate() {
-  var toStr = function(box) {
-    var scheme = localStorage[box + '-scheme'] || 'http';
-    var host = localStorage[box + '-host'] || '127.0.0.1';
-    var port = localStorage[box + '-port'] || '8080';
-    return cleanscheme(scheme) + "://" + host + ":" + port;
-  };
-  if (localStorage['mode'] == 'custom') {
-    var hp = toStr('hp');
-    var hsp = toStr('hsp');
-    var ftp = toStr('ftp');
-    var fbp = toStr('fbp');
-    var proxy = hp + ',' + hsp + ',' + ftp + ',' + fbp;
-    localStorage['proxy'] = proxy;
-    localStorage['proxies'] = JSON.stringify([proxy]);
-  } else {
-    var proxy = toStr('sp');
-    localStorage['proxy'] = proxy;
-    localStorage['proxies'] = JSON.stringify([proxy]);
-  }
-  delete localStorage['mode'];
-};
-
 function setup() {
   var proxy = "http://localhost:8080";
   localStorage['proxy'] = proxy;
@@ -67,10 +75,7 @@ function setup() {
 
 
 function setProxy() {
-  if (!localStorage['proxy'] && localStorage['mode'] == 'custom' ||
-      localStorage['mode'] == 'single') {
-    migrate();
-  } else if(!localStorage['proxy']) {
+  if(!localStorage['proxy']) {
     setup();
   }
 
@@ -87,6 +92,14 @@ function setProxy() {
 
     loadProxy(proxysettings.rules);
 
+    if (proxysettings.rules.PacScript) {
+      proxysettings = {
+        mode: 'pac_script',
+        pacScript: proxysettings.rules.PacScript
+      };
+    }
+
+    console.log(proxysettings);
     chrome.proxy.settings.set({
       'value': proxysettings,
       'scope': getScope()
@@ -158,6 +171,7 @@ function requestListener(request, sender, sendResponse) {
 };
 
 function errorListener(details) {
+  console.log(details);
 	if (getState() == "true") {
   	chrome.browserAction.setBadgeBackgroundColor({color: [210, 110, 80, 180]});
 	}

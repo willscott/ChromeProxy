@@ -1,0 +1,130 @@
+{
+  "browserActionTitle": {
+    "message": "Нажмите, чтобы перейти к proxxy!",
+    "description": "Title text for the browser action icon."
+  },
+  "browserActionOff": {
+    "message": "Выкл",
+    "description": "Icon overlay when not proxied."
+  },
+  "browserActionOn": {
+    "message": "Вкл",
+    "description": "Icon overlay when proxied."
+  },
+  "extName": {
+    "message": "Proxxy",
+    "description": "Extension name."
+  },
+  "extDesc": {
+    "message": "Просто лучший прокси интерфейс для Хрома.",
+    "description": "Extension description."
+  },
+  "optHeader": {
+    "message": "Proxxy Настройки",
+    "description": "Options page Header."
+  },
+  "optTitle": {
+    "message": "Proxxy",
+    "description": "Page title of the Options page."
+  },
+  "optProxyListHeader": {
+    "message": "Прокси",
+    "description": "Header for the list of proxies on the options page."
+  },
+  "optAddProxyButton": {
+    "message": "Добавить",
+    "description": "Add Proxy Button Text on the options page."
+  },
+  "optDomProxyButton": {
+    "message": "Редактировать Правила домена",
+    "description": "Button for editing which domains a proxy will be used for."
+  },
+  "optDomainHeader": {
+    "message": "Домен Включить / Исключить",
+    "description": "Header for domain settings on the options page."
+  },
+  "optDomModeValueInclude": {
+    "message": "Работать через прокси только к доменами по этой маске",
+    "description": "Option indicating the proxy should only be used for a specified set of patterns."
+  },
+  "optDomModeValueExclude": {
+    "message": "Исключить эти маски доменов",
+    "description": "Option indicating the proxy should be used except for a specified set of patterns."
+  },
+  "optDomExcept": {
+    "message": "Одна запись в строке. Шаблоны, такие как '* .com' допускается.",
+    "description": "Help text explaining domain exclusion rules."
+  },
+  "optSystemHeader": {
+    "message": "Система",
+    "description": "Header for system settings on the options page."
+  },
+  "optIncognitoLabel": {
+    "message": "Работать через прокси только в окне \"инкогнито\"",
+    "description": "Label for the checkbox to only proxy incognito windows on the options page"
+  },
+  "optOffLabel": {
+    "message": "Поведение если прокси не указан",
+    "description": "Label for the setting to choose behavior when proxy is turned off on the options page"
+  },
+  "optOffValueClear": {
+    "message": "Вернуть управление",
+    "description": "Option indicating chrome can choose what to do when proxxy is disabled."
+  },
+  "optOffValueDirect": {
+    "message": "Принудительно прямое соединение (мимо прокси)",
+    "description": "Option indicating that chrome should attempt to connect directly when proxxy is disabled."
+  },
+  "optOffValueSystem": {
+    "message": "Использовать настройки операционной системы ",
+    "description": "Option indicating that chrome should use the system proxy settings when proxxy is disabled."
+  },
+  "optOffValueAuto": {
+    "message": "Принудительной использовать Wpad прокси",
+    "description": "Option indicating that chrome should use a network wpad proxy when proxxy is disabled."
+  },
+  "optSaveButton": {
+    "message": "Сохранить",
+    "description": "Button for saving proxy settings on the options page"
+  },
+  "optClearButton": {
+    "message": "Сборить настройки прокси-сервера",
+    "description": "Button for clearing proxy settings on the options page"
+  },
+  "optAboutHeader": {
+    "message": "Примечания",
+    "description": "Header for the 'about' section of the options page, explaining how to help."
+  },
+  "optAboutText": {
+    "message": "Хотите увидеть Proxxy на Вашем языке? Расширение лишено некоторых возможностей? Легко добавить свой вклад в нашу общую работу! Просто перейдите по ссылке ниже и задайте вопросы на Proxxy Google+ Page. (я так и сделал, Yalexand)",
+    "description": "Text at the bottom of the options page explaining proxxy development."
+  },
+  "optAboutLink": {
+    "message": "Свяжитесь с нами!",
+    "description": "Link text for the Google+ Page."
+  },
+  "optUsageHeader": {
+    "message": "Использование",
+    "description": "Header for display of your aggregate proxy usage."
+  },
+  "optUsageLocal": {
+    "message": "Локальный прокси",
+    "description": "Usage title for time spent with an active local proxy."
+  },
+  "optUsageRemote": {
+    "message": "Удалённый прокси",
+    "description": "Usage title for time spent with an active remote proxy."
+  },
+  "optUsageUnknown": {
+    "message": "Неизвестно",
+    "description": "Usage title for time spent with proxy in unknown state."
+  },
+  "optUsageOff": {
+    "message": "Без прокси",
+    "description": "Usage title for time spent without an active proxy."
+  },
+  "optUsageOptOut": {
+    "message": "Не отслеживать это.",
+    "description": "Label for checkbox to turn off aggregation of proxy usage."
+  }
+}

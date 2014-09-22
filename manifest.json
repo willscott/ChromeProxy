@@ -1,6 +1,7 @@
 {
   "manifest_version": 2,
   "name": "__MSG_extName__",
+  "short_name": "__MSG_extName__",
   "description": "__MSG_extDesc__",
   "version": "1.4.1",
   "background": {

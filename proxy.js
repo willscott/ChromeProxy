@@ -1,6 +1,6 @@
-var proxy = function() {};
+var proxy = function () {};
 
-proxy.prototype.makeItem = function() {
+proxy.prototype.makeItem = function () {
   this.element = document.createElement('div');
   this.element.setAttribute('role', 'listitem');
   this.element.className = "deletable-item";
@@ -15,12 +15,12 @@ proxy.prototype.makeItem = function() {
   this.element.appendChild(removeButton);
   
   var that = this;
-  removeButton.addEventListener('click', function() {
+  removeButton.addEventListener('click', function () {
     that.unrender();
   }, false);
 };
 
-proxy.prototype.makeEditor = function(container) {
+proxy.prototype.makeEditor = function (container) {
   var schemeEditor = document.createElement('select');
   schemeEditor.add(new Option('HTTP'));
   schemeEditor.add(new Option('HTTPS'));
@@ -45,28 +45,28 @@ proxy.prototype.makeEditor = function(container) {
   var that = this;
   var editors = [schemeEditor, hostEditor, portEditor];
   for (var idx in editors) {
-    editors[idx].addEventListener('click', function(e) {
+    editors[idx].addEventListener('click', function (e) {
       e.preventDefault();
       e.stopPropagation();
       return false;
     }, false);
-    editors[idx].addEventListener('change', function() {
+    editors[idx].addEventListener('change', function () {
       that.scheme = schemeEditor.value.toLowerCase();
       that.host = hostEditor.value;
       that.port = portEditor.value;
       if (!that.port) {
-        if (that.scheme == "http") that.port = 80;
-        else if (that.scheme == "https") that.port = 443;
-        else if (that.scheme == "socks4") that.port = 1080;
-        else if (that.scheme == "socks5") that.port = 1080;
+        if (that.scheme === "http") that.port = 80;
+        else if (that.scheme === "https") that.port = 443;
+        else if (that.scheme === "socks4") that.port = 1080;
+        else if (that.scheme === "socks5") that.port = 1080;
       }
       that.element.getElementsByClassName('title')[0].innerHTML = "";
       that.element.getElementsByClassName('title')[0].appendChild(that.toHTML());
     }, false);
-    editors[idx].addEventListener('focus', function() {
+    editors[idx].addEventListener('focus', function () {
       that.editFocus = true;
     },false);
-    editors[idx].addEventListener('blur', function() {
+    editors[idx].addEventListener('blur', function () {
       that.editFocus = false;
       if (!that.container.getAttribute('hasElementFocus')) {
         that.blur();
@@ -76,7 +76,7 @@ proxy.prototype.makeEditor = function(container) {
   return editors;
 };
 
-proxy.prototype.render = function(container) {
+proxy.prototype.render = function (container) {
   this.container = container;
   this.makeItem();
   
@@ -95,11 +95,11 @@ proxy.prototype.render = function(container) {
   this.makeEditor(editMode);
 
   var that = this;
-  this.element.addEventListener('click', function() {
+  this.element.addEventListener('click', function () {
     if(that.element.getAttribute('selected') == null) {
       that.onSelect();
       that.element.setAttribute('selected', true);
-    } else if (that.element.getAttribute('editing') == null) {
+    } else if (that.element.getAttribute('editing') === null) {
       that.element.setAttribute('editing', true);
     } else {
       that.element.removeAttribute('editing');
@@ -109,23 +109,23 @@ proxy.prototype.render = function(container) {
   this.container.appendChild(this.element);
 };
 
-proxy.prototype.unrender = function() {
+proxy.prototype.unrender = function () {
   if (this.container && this.element) {
     this.container.removeChild(this.element);
     this.onRemove();
   }
 };
 
-proxy.prototype.onRemove = function() {};
-proxy.prototype.onSelect = function() {};
+proxy.prototype.onRemove = function () {};
+proxy.prototype.onSelect = function () {};
 
-proxy.prototype.blur = function() {
+proxy.prototype.blur = function () {
   if (!this.editFocus) {
     this.element.removeAttribute('editing');
   }
 };
 
-proxy.prototype.update = function(value) {
+proxy.prototype.update = function (value) {
   var other = proxy.fromString(value);
   this.scheme = other.scheme;
   this.host = other.host;
@@ -133,12 +133,12 @@ proxy.prototype.update = function(value) {
   this.domains = other.domains;
 }
 
-proxy.prototype.deselect = function() {
+proxy.prototype.deselect = function () {
     this.element.removeAttribute('selected');
     this.element.removeAttribute('editing');
 };
 
-proxy.prototype.toString = function() {
+proxy.prototype.toString = function () {
   var dom = "";
   if (this.domains.length) {
     dom = ";" + this.domains;
@@ -146,13 +146,13 @@ proxy.prototype.toString = function() {
   return this.scheme + "://" + this.host + ":" + this.port + dom;
 };
 
-proxy.prototype.toHTML = function() {
+proxy.prototype.toHTML = function () {
   var text = document.createElement('span');
   text.innerText = this.scheme + "://" + this.host + ":" + this.port;
   return text;
 };
 
-proxy.fromString = function(string) {
+proxy.fromString = function (string) {
   var domains = "";
   if (string.indexOf(";") > -1) {
     var idx = string.indexOf(";");
@@ -166,7 +166,7 @@ proxy.fromString = function(string) {
       return new metaproxy([]);
     }
     proxies = [];
-    for (var i = 0; i < 4; i++) {
+    for (var i = 0; i < 4; i += 1) {
       proxies.push(proxy.fromString(items[i]));
     }
     var m = new metaproxy(proxies);
@@ -182,7 +182,7 @@ proxy.fromString = function(string) {
   return p;
 };
 
-var metaproxy = function(proxies) {
+var metaproxy = function (proxies) {
   this.proxies = proxies;
 };
 
@@ -190,10 +190,10 @@ for (var i in proxy.prototype) {
   metaproxy.prototype[i] = proxy.prototype[i];
 }
 
-metaproxy.prototype.render = function(container) {
+metaproxy.prototype.render = function (container) {
   this.container = container;
   this.makeItem();
-  for (var i = 0; i < this.proxies.length; i++) {
+  for (var i = 0; i < this.proxies.length; i += 1) {
     this.proxies[i].container = this.container;
     this.proxies[i].element = this.element;
     this.proxies[i].toHTML = this.toHTML.bind(this);
@@ -227,24 +227,24 @@ metaproxy.prototype.render = function(container) {
   this.element.insertBefore(label, this.element.lastChild);
 
   var that = this;
-  viewMode.addEventListener('click', function() {
-    if(that.element.getAttribute('selected') == null) {
+  viewMode.addEventListener('click', function () {
+    if(that.element.getAttribute('selected') === null) {
       that.onSelect();
       that.element.setAttribute('selected', true);
     } else {
       that.element.setAttribute('editing', true);
     }
   }, false);
-  editMode.addEventListener('click', function() {
+  editMode.addEventListener('click', function () {
     that.element.removeAttribute('editing');
   }, false);
 
   this.container.appendChild(this.element);
 };
 
-metaproxy.prototype.toString = function() {
+metaproxy.prototype.toString = function () {
   var string = "";
-  for (var i = 0; i < this.proxies.length; i++) {
+  for (var i = 0; i < this.proxies.length; i += 1) {
     string += this.proxies[i].toString() + ",";
   }
   var s = string.substr(0, string.length - 1);
@@ -254,9 +254,9 @@ metaproxy.prototype.toString = function() {
   return s;
 };
 
-metaproxy.prototype.toHTML = function() {
+metaproxy.prototype.toHTML = function () {
   var x = document.createElement('span');
-  for (var i = 0; i < this.proxies.length; i++) {
+  for (var i = 0; i < this.proxies.length; i += 1) {
     var y = document.createElement('div');
     y.style.lineHeight = "30px";
     y.innerText = this.proxies[i].toString();
@@ -265,7 +265,7 @@ metaproxy.prototype.toHTML = function() {
   return x;
 };
 
-metaproxy.prototype.blur = function() {
+metaproxy.prototype.blur = function () {
   for (var i = 0; i < this.proxies.length; i++) {
     if (this.proxies[i].editFocus) {
       return;

@@ -1,16 +1,17 @@
-var proxyList = function(el) {
+var proxyList = function (el) {
   this.element = el;
   this.proxies = [];
   this.init();
 };
-proxyList.prototype.init = function() {
+
+proxyList.prototype.init = function () {
   var that = this;
-  this.element.addEventListener('focus', function() {
+  this.element.addEventListener('focus', function () {
     that.element.setAttribute('hasElementFocus', true);
   }, false);
-  this.element.addEventListener('blur', function(e) {
+  this.element.addEventListener('blur', function (e) {
     that.element.removeAttribute('hasElementFocus');
-    window.setTimeout(function() {
+    window.setTimeout(function () {
       for (var idx = 0; idx < that.proxies.length; idx++) {
         that.proxies[idx].blur();
       }
@@ -18,26 +19,30 @@ proxyList.prototype.init = function() {
   }, false);
 };
 
-proxyList.prototype.onSelect = function(selectedItem) {};
+proxyList.prototype.onSelect = function (selectedItem) {};
 
-proxyList.prototype.addComplex = function() {
-  this.addByName("http://localhost:8080,http://localhost:8080,http://localhost:8080,http://localhost:8080");
+proxyList.prototype.addComplex = function () {
+  this.addByName(
+      "http://localhost:8080," +
+      "http://localhost:8080," +
+      "http://localhost:8080," +
+      "http://localhost:8080");
 };
 
-proxyList.prototype.add = function() {
+proxyList.prototype.add = function () {
   this.addByName("http://localhost:8080");
 };
 
-proxyList.prototype.addByName = function(string) {
+proxyList.prototype.addByName = function (string) {
   var p = proxy.fromString(string);
   this.proxies.push(p);
   p.render(this.element);
-  p.onRemove = function() {
+  p.onRemove = function () {
     var idx = this.proxies.indexOf(p);
     this.proxies.splice(idx, 1);
     this.onSelect("");
   }.bind(this);
-  p.onSelect = function() {
+  p.onSelect = function () {
     for (var idx = 0; idx < this.proxies.length; idx++) {
       if (this.proxies[idx] != p) {
         this.proxies[idx].deselect();
@@ -47,7 +52,7 @@ proxyList.prototype.addByName = function(string) {
   }.bind(this);
 };
 
-proxyList.prototype.select = function(string) {
+proxyList.prototype.select = function (string) {
   for (var i = 0; i < this.proxies.length; i++) {
     if (this.proxies[i].toString() == string) {
       this.proxies[i].element.setAttribute('selected', true);
@@ -57,7 +62,7 @@ proxyList.prototype.select = function(string) {
   }
 };
 
-proxyList.prototype.getValue = function() {
+proxyList.prototype.getValue = function () {
   for (var i = 0; i < this.proxies.length; i++) {
     if (this.proxies[i].element.attributes.getNamedItem('selected')) {
       return this.proxies[i];
@@ -66,11 +71,11 @@ proxyList.prototype.getValue = function() {
   return null;
 };
 
-proxyList.prototype.save = function() {
+proxyList.prototype.save = function () {
   window.setTimeout(this.save_.bind(this), 0);
 }
 
-proxyList.prototype.save_ = function() {
+proxyList.prototype.save_ = function () {
   var p = "";
   var ps = [];
   for (var i = 0; i < this.proxies.length; i++) {
@@ -83,9 +88,9 @@ proxyList.prototype.save_ = function() {
   localStorage['proxy'] = p;
 };
 
-proxyList.getInstance = function(el) {
+proxyList.getInstance = function (el) {
   var pl = new proxyList(el);
-  if(localStorage['proxies'] != undefined) {
+  if(localStorage['proxies'] !== undefined) {
     var array = JSON.parse(localStorage['proxies']);
     for (var i = 0; i < array.length; i++) {
       pl.addByName(array[i]);
@@ -95,3 +100,4 @@ proxyList.getInstance = function(el) {
 
   return pl;
 };
+

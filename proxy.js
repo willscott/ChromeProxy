@@ -4,7 +4,7 @@ proxy.prototype.makeItem = function () {
   this.element = document.createElement('div');
   this.element.setAttribute('role', 'listitem');
   this.element.className = "deletable-item";
-  
+
   var content = document.createElement('div');
   content.style.paddingLeft = "32px";
   this.element.appendChild(content);
@@ -13,7 +13,7 @@ proxy.prototype.makeItem = function () {
   removeButton.setAttribute('tabindex', '-1');
   removeButton.className = "row-delete-button custom-appearance";
   this.element.appendChild(removeButton);
-  
+
   var that = this;
   removeButton.addEventListener('click', function () {
     that.unrender();
@@ -26,6 +26,7 @@ proxy.prototype.makeEditor = function (container) {
   schemeEditor.add(new Option('HTTPS'));
   schemeEditor.add(new Option('SOCKS4'));
   schemeEditor.add(new Option('SOCKS5'));
+  schemeEditor.add(new Option('QUIC'));
   schemeEditor.value = this.scheme;
   container.appendChild(schemeEditor);
   container.appendChild(document.createTextNode("://"));
@@ -56,6 +57,7 @@ proxy.prototype.makeEditor = function (container) {
       that.port = portEditor.value;
       if (!that.port) {
         if (that.scheme === "http") that.port = 80;
+        else if (that.scheme === "quic") that.port = 443;
         else if (that.scheme === "https") that.port = 443;
         else if (that.scheme === "socks4") that.port = 1080;
         else if (that.scheme === "socks5") that.port = 1080;
@@ -79,7 +81,7 @@ proxy.prototype.makeEditor = function (container) {
 proxy.prototype.render = function (container) {
   this.container = container;
   this.makeItem();
-  
+
   var content = this.element.children[0];
   var viewMode = document.createElement('div');
   viewMode.appendChild(this.toHTML());
@@ -91,7 +93,7 @@ proxy.prototype.render = function (container) {
   editMode.setAttribute('displaymode', 'edit');
   editMode.className = "editor";
   content.appendChild(editMode);
-  
+
   this.makeEditor(editMode);
 
   var that = this;
@@ -198,7 +200,7 @@ metaproxy.prototype.render = function (container) {
     this.proxies[i].element = this.element;
     this.proxies[i].toHTML = this.toHTML.bind(this);
   }
-  
+
   this.element.style.height = "128px";
   var content = this.element.children[0];
 
@@ -212,7 +214,7 @@ metaproxy.prototype.render = function (container) {
   editMode.setAttribute('displaymode', 'edit');
   editMode.className = "editor";
   content.appendChild(editMode);
-  
+
   this.makeEditor.bind(this.proxies[0])(editMode);
   editMode.appendChild(document.createElement("br"));
   this.makeEditor.bind(this.proxies[1])(editMode);
@@ -220,7 +222,7 @@ metaproxy.prototype.render = function (container) {
   this.makeEditor.bind(this.proxies[2])(editMode);
   editMode.appendChild(document.createElement("br"));
   this.makeEditor.bind(this.proxies[3])(editMode);
-  
+
   var label = document.createElement('div');
   label.className = "list-tooltip";
   label.innerHTML = "HTTP<br>HTTPS<br>FTP<br>Fallback";

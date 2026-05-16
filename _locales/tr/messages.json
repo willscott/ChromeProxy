@@ -29,8 +29,7 @@
    },
    "optAboutText": {
       "description": "Text at the bottom of the options page explaining proxxy development.",
-      "message": "Proxxy'yi başka bir dile çevirebilir ya da eklenmesini istediğiniz özellikleri \n
-       bize bildirebilirsiniz. Google+ sayfamıza bekleriz."
+       "message": "Proxxy'yi başka bir dile çevirebilir ya da eklenmesini istediğiniz özellikleri \nbize bildirebilirsiniz. Google+ sayfamıza bekleriz."
    },
    "optAddProxyButton": {
       "description": "Add Proxy Button Text on the options page.",

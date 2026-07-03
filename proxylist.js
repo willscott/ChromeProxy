@@ -86,6 +86,7 @@ proxyList.prototype.save_ = function () {
   }
   localStorage['proxies'] = JSON.stringify(ps);
   localStorage['proxy'] = p;
+  chrome.storage.local.set({proxies: JSON.stringify(ps), proxy: p});
 };
 
 proxyList.getInstance = function (el) {

@@ -1,16 +1,18 @@
 function save() {
   document.getElementById('save').setAttribute('disabled', 'true');
-  chrome.extension.sendMessage({'cmd': 'start_save'}, real_save);
+  chrome.runtime.sendMessage({'cmd': 'start_save'}, real_save);
 }
 
 function real_save() {
   window.proxyList.save();
 
-  localStorage['incognito'] = document.getElementById('incognito').checked ?
-      'checked' : 0;
-  localStorage['off'] = document.getElementById('off').value;
+  var incognito = document.getElementById('incognito').checked ? 'checked' : 0;
+  var off = document.getElementById('off').value;
+  localStorage['incognito'] = incognito;
+  localStorage['off'] = off;
+  chrome.storage.local.set({incognito: incognito, off: off});
 
-  chrome.extension.sendMessage({
+  chrome.runtime.sendMessage({
     'cmd': 'end_save'
   }, function(response) {
     document.getElementById('save').removeAttribute('disabled');
@@ -18,7 +20,7 @@ function real_save() {
 }
 
 function loadUsage() {
-  chrome.extension.sendMessage({'cmd': 'get_statistics'}, function (usage) {
+  chrome.runtime.sendMessage({'cmd': 'get_statistics'}, function (usage) {
     if (usage.countedTime !== 0) {
       document.getElementById("unknownUsage").style.width = "0%";
       document.getElementById("localUsage").style.width =
@@ -33,7 +35,7 @@ function loadUsage() {
 }
 
 function updateUsage() {
-  chrome.extension.sendMessage({
+  chrome.runtime.sendMessage({
     'cmd': 'set_statistics',
     'value': !document.getElementById('usageoptout').checked
   }, function(usage) {
@@ -53,7 +55,7 @@ function updateUsage() {
 
 function clear() {
   document.getElementById('clear').setAttribute('disabled', 'true');
-  chrome.extension.sendMessage({'cmd': 'clear'}, real_clear);
+  chrome.runtime.sendMessage({'cmd': 'clear'}, real_clear);
 }
 
 function real_clear() {
@@ -71,9 +73,29 @@ function setup() {
   var proxy = "http://localhost:8080";
   localStorage['proxy'] = proxy;
   localStorage['proxies'] = JSON.stringify([proxy]);
+  chrome.storage.local.set({proxy: proxy, proxies: JSON.stringify([proxy])});
 };
 
+function migrateFromMV2() {
+  chrome.storage.local.get('migrated', function(r) {
+    if (r.migrated) return;
+    var data = {};
+    if (localStorage['proxy']) data.proxy = localStorage['proxy'];
+    if (localStorage['proxies']) data.proxies = localStorage['proxies'];
+    if (localStorage['incognito']) data.incognito = localStorage['incognito'];
+    if (localStorage['off']) data.off = localStorage['off'];
+    if (localStorage['state']) data.state = localStorage['state'];
+    if (localStorage['stats']) data.stats = localStorage['stats'];
+    if (localStorage['collectStats']) data.collectStats = localStorage['collectStats'];
+    data.migrated = true;
+    chrome.storage.local.set(data, function() {
+      chrome.runtime.sendMessage({cmd: 'migrated'});
+    });
+  });
+}
+
 window.onload = function() {
+  migrateFromMV2();
   if(!localStorage['proxy']) {
     setup();
   }
@@ -143,7 +165,7 @@ window.onload = function() {
       (localStorage['incognito'] === 'checked');
   document.getElementById('off').value = localStorage['off'] || 'clear';
   document.getElementById('logo').src =
-      chrome.extension.getURL('icon-128.png');
+      chrome.runtime.getURL('icon-128.png');
 
   document.getElementById('domainrules').style.display = localStorage['domMode'] || 'none';
   document.getElementById('save').addEventListener('click', save, false);

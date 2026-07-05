@@ -1,9 +1,15 @@
+let S = {};
+
+async function loadState() {
+  S = await chrome.storage.local.get(null);
+}
+
 function getState() {
-  return localStorage['state'] || "false";
+  return S['state'] || "false";
 }
 
 function getScope() {
-  return (localStorage['incognito'] === 'checked') ?
+  return (S['incognito'] === 'checked') ?
       'incognito_persistent' : 'regular';
 }
 
@@ -17,7 +23,7 @@ function splitProxy(string) {
 }
 
 function loadProxy(rules) {
-  var proxy = localStorage['proxy'] || 'http://localhost:8080';
+  var proxy = S['proxy'] || 'http://localhost:8080';
   var domain = "";
   if (proxy.indexOf(";") > -1) {
     var domIdx = proxy.indexOf(";");
@@ -33,7 +39,7 @@ function loadProxy(rules) {
   } else {
     rules['singleProxy'] = splitProxy(proxy);
   }
-  
+
   if (domain && domain[0] == "+") {
     var pxy = "DIRECT";
     if (rules['singleProxy']['scheme'] === "socks4" ||
@@ -68,24 +74,24 @@ function cleanscheme(s) {
   return s;
 };
 
-function setup() {
+async function setup() {
   var proxy = "http://localhost:8080";
-  localStorage['proxy'] = proxy;
-  localStorage['proxies'] = JSON.stringify([proxy]);
+  S['proxy'] = proxy;
+  S['proxies'] = JSON.stringify([proxy]);
+  await chrome.storage.local.set({proxy: proxy, proxies: S['proxies']});
 };
 
-
-function setProxy() {
-  if(!localStorage['proxy']) {
-    setup();
+async function setProxy() {
+  if(!S['proxy']) {
+    await setup();
   }
 
   var state = getState();
   if (state != "false") {
-    chrome.browserAction.setBadgeText({
+    chrome.action.setBadgeText({
       text: chrome.i18n.getMessage("browserActionOn")
     });
-    chrome.browserAction.setBadgeBackgroundColor({color: [110, 210, 80, 180]});
+    chrome.action.setBadgeBackgroundColor({color: [110, 210, 80, 180]});
 
     var proxysettings = {
       mode: 'fixed_servers',
@@ -107,12 +113,12 @@ function setProxy() {
       'scope': getScope()
     }, function() {});
   } else {
-    chrome.browserAction.setBadgeBackgroundColor({color: [130, 130, 130, 180]});
-    chrome.browserAction.setBadgeText({
+    chrome.action.setBadgeBackgroundColor({color: [130, 130, 130, 180]});
+    chrome.action.setBadgeText({
       text: chrome.i18n.getMessage("browserActionOff")
     });
-    if (localStorage['off'] in ['system', 'auto_detect', 'direct']) {
-      var proxysettings = {mode: localStorage['off']};
+    if (S['off'] in ['system', 'auto_detect', 'direct']) {
+      var proxysettings = {mode: S['off']};
       chrome.proxy.settings.set({
         'value': proxysettings,
         'scope': getScope()
@@ -129,53 +135,69 @@ function clearProxy() {
   chrome.proxy.settings.clear({'scope': 'incognito_session_only'});
 }
 
-function clickListener() {
+async function clickListener() {
+  await loadState();
   var state = getState();
   if (state == "false") {
+    if (!S['proxy']) {
+      chrome.tabs.create({url: "options.html"});
+      return;
+    }
     state = "true";
   } else {
     state = "false";
   }
-  localStorage['state'] = state;
-  setProxy();
+  S['state'] = state;
+  await chrome.storage.local.set({state: state});
+  await setProxy();
 }
 
-function requestListener(request, sender, sendResponse) {
+async function requestListener(request, sender, sendResponse) {
+  if (request['cmd'] === 'migrated') {
+    await loadState();
+    await setProxy();
+    sendResponse();
+    return true;
+  }
+  await loadState();
   if (request['cmd'] === 'start_save') {
     var state = getState();
-    localStorage['savedState'] = state
+    S['savedState'] = state;
+    await chrome.storage.local.set({savedState: state});
     if (state === "true") {
-      clickListener()
+      await clickListener();
     } else {
-      setProxy();
+      await setProxy();
     }
+    sendResponse();
   } else if (request['cmd'] === 'clear') {
     clearProxy();
+    sendResponse();
   } else if (request['cmd'] === 'get_statistics') {
     updateStatistics('stats');
-    var stats = JSON.parse(localStorage['stats']);
+    var stats = JSON.parse(S['stats'] || '{}');
     sendResponse(stats);
-    return;
   } else if (request['cmd'] === 'set_statistics') {
-    localStorage['collectStats'] = request['value'];
+    S['collectStats'] = request['value'];
+    await chrome.storage.local.set({collectStats: request['value']});
     updateStatistics('stats');
-    var stats = JSON.parse(localStorage['stats']);
+    var stats = JSON.parse(S['stats'] || '{}');
     sendResponse(stats);
-    return;
-  } else { //end save
-    if (localStorage['savedState'] === "true") {
-      clickListener();
+  } else {
+    if (S['savedState'] === "true") {
+      await clickListener();
     } else {
-      setProxy();
+      await setProxy();
     }
+    sendResponse();
   }
-  sendResponse();
+  return true;
 }
 
 function errorListener(details) {
   console.log(details);
   if (getState() == "true") {
-    chrome.browserAction.setBadgeBackgroundColor({color: [210, 110, 80, 180]});
+    chrome.action.setBadgeBackgroundColor({color: [210, 110, 80, 180]});
   }
   updateStatistics("error");
 }
@@ -201,12 +223,12 @@ function changeListener(details) {
 function updateStatistics(why) {
   var stats;
   try {
-    stats = JSON.parse(localStorage['stats']);
+    stats = JSON.parse(S['stats']);
   } catch(e) {
     stats = {
       last: new Date().valueOf(),
       lastCheck: new Date().valueOf(),
-      lastState: false, 
+      lastState: false,
       countedTime: 0,
       localUsage: 0,
       remoteUsage: 0,
@@ -214,15 +236,16 @@ function updateStatistics(why) {
       flips: 0
     };
   }
-  if (localStorage['collectStats'] == "false") {
+  if (S['collectStats'] == "false") {
     stats = {countedTime: 0, optout: true};
-    localStorage['stats'] = JSON.stringify(stats);
+    S['stats'] = JSON.stringify(stats);
+    chrome.storage.local.set({stats: JSON.stringify(stats)});
     return;
   } else if (stats.optout) {
     stats = {
       last: new Date().valueOf(),
       lastCheck: new Date().valueOf(),
-      lastState: false, 
+      lastState: false,
       countedTime: 0,
       localUsage: 0,
       remoteUsage: 0,
@@ -249,67 +272,52 @@ function updateStatistics(why) {
   if (!stats.lastState && !(why == 'error') &&
       (lc + 1000 * 60 * 60 * 24) < new Date().valueOf()) {
     stats.lastCheck = new Date().valueOf();
-    saveUsage([
-      ['usage', ['local', stats.localUsage]],
-      ['usage', ['remote', stats.remoteUsage]],
-      ['usage', ['total', stats.countedTime]],
-      ['events', stats.flips],
-      ['errors', stats.errors]
-    ]);
   }
-  localStorage['stats'] = JSON.stringify(stats);
+  S['stats'] = JSON.stringify(stats);
+  chrome.storage.local.set({stats: JSON.stringify(stats)});
 }
 
-function saveUsage(events) {
-  var g = document.createElement('script'), i = 0;
-  g.type = 'text/javascript'; g.async = true;
-  g.src = 'https://ssl.google-analytics.com/ga.js';
-  g.addEventListener('load', function() {
-    _gaq.push(['_setAccount', 'UA-471290-9']);
-    for (i = 0; i < events.length; i += 1) {
-      _gaq.push(['_trackEvent'].concat(events[i]));
-    }
-  }, true);
-  document.head.appendChild(g);
-}
-
-function installListener()
+async function installListener(details)
 {
-  startupListener();
-  if (localStorage['state'] == undefined) {
-    // First Install.
-    chrome.browserAction.setBadgeBackgroundColor({color: [210, 110, 80, 180]});
-    chrome.browserAction.setBadgeText({
+  await loadState();
+  chrome.action.setIcon({path: "icon-19.png"});
+  chrome.action.setBadgeBackgroundColor({color:[130, 130, 130, 180]});
+  if (details.reason === 'update') {
+    if (S['state'] === "true") {
+      await setProxy();
+    }
+    return;
+  }
+  if (S['state'] == undefined) {
+    chrome.action.setBadgeBackgroundColor({color: [210, 110, 80, 180]});
+    chrome.action.setBadgeText({
       text: "!"
     });
-    chrome.browserAction.onClicked.removeListener(clickListener);
-    chrome.browserAction.onClicked.addListener(firstClickListener);
+    chrome.action.onClicked.removeListener(clickListener);
+    chrome.action.onClicked.addListener(firstClickListener);
   }
+  await setProxy();
 }
 
 function firstClickListener() {
-  window.open("options.html");
-  chrome.browserAction.onClicked.removeListener(firstClickListener);
-  chrome.browserAction.onClicked.addListener(clickListener);
-  setProxy();	
+  chrome.tabs.create({url: "options.html"});
+  chrome.action.onClicked.removeListener(firstClickListener);
+  chrome.action.onClicked.addListener(clickListener);
+  setProxy();
 }
 
-function startupListener() {
-  // Initial View.
-  chrome.browserAction.setIcon({path: "icon-19.png"});
-  chrome.browserAction.setBadgeBackgroundColor({color:[130, 130, 130, 180]});
-
-  // Restore state.
-  setProxy();	
+async function startupListener() {
+  await loadState();
+  chrome.action.setIcon({path: "icon-19.png"});
+  chrome.action.setBadgeBackgroundColor({color:[130, 130, 130, 180]});
+  await setProxy();
 }
 
-/**
- * Initialization.
- */
-chrome.browserAction.onClicked.addListener(clickListener);
-chrome.extension.onMessage.addListener(requestListener);
-chrome.proxy.onProxyError.addListener(errorListener);
-chrome.proxy.settings.onChange.addListener(changeListener);
-chrome.runtime.onStartup.addListener(startupListener);
-chrome.runtime.onInstalled.addListener(installListener);
-
+loadState().then(() => {
+  chrome.action.onClicked.addListener(clickListener);
+  chrome.runtime.onMessage.addListener(requestListener);
+  chrome.proxy.onProxyError.addListener(errorListener);
+  chrome.proxy.settings.onChange.addListener(changeListener);
+  chrome.runtime.onStartup.addListener(startupListener);
+  chrome.runtime.onInstalled.addListener(installListener);
+});
